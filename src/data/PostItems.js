@@ -1,6 +1,7 @@
 export default [
 	{
 		"id": 1,
+		"uuid": "1234-dsadsa-123-dsa-e12",
 		"date": "2019-03-17",
 		"title": "Web Preformance API - Preload your fonts!",
 		"content": `Med det nya web preformance API kan man sätta rel-attributs på sina resources för att styra hur de ska laddas in.
@@ -11,6 +12,7 @@ export default [
 	},
 	{
 		"id": 2,
+		"uuid": "1254234-dsadsa-123-dsa-e12",
 		"date": "2019-03-17",
 		"title": "PHP abstractions",
 		"content": "För att....",
@@ -18,6 +20,7 @@ export default [
 	},
 	{
 		"id": 3,
+		"uuid": "dsadsa-21-12dsa3-dsa-e12",
 		"date": "2019-03-17",
 		"title": "React.js Hooks",
 		"content": "Hooks är det som gäller!",
@@ -25,6 +28,7 @@ export default [
 	},
 	{
 		"id": 4,
+		"uuid": "12hg34-dsadsa-123-dsa-e12",
 		"date": "2019-03-17",
 		"title": "React Native view",
 		"content": "Hur en lista i React Native fungerar",
@@ -32,6 +36,7 @@ export default [
 	},
 	{
 		"id": 5,
+		"uuid": "hgf3-dsad12sa-123-dsa-e12",
 		"date": "2019-03-17",
 		"title": "React.js props and functions",
 		"content": "Props och functions...",
@@ -39,6 +44,7 @@ export default [
 	},
 	{
 		"id": 6,
+		"uuid": "87gbf-12fda-123-dsa-e12",
 		"date": "2019-03-17",
 		"title": "Hacka lök",
 		"content": "Börja med att skär av översta delen...",

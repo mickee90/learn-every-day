@@ -1,15 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
+import Grid from '@material-ui/core/Grid';
 
-const ListTitleBox = styled.div`
-	display: inline-block;
-	height: 60px;
+const ListTitleBox = styled(Grid)`
+	// display: inline-block;
+	// height: 60px;
 `;
 
 export default props => {
 
 	return(
-		<ListTitleBox>
+		<ListTitleBox item xs={9}>
 			{props.children}
 		</ListTitleBox>
 	);

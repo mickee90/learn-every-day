@@ -1,20 +1,19 @@
 import React from 'react';
 import Moment from 'react-moment';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
+import Grid from '@material-ui/core/Grid';
 
-const ListDateBox = styled.div`
-	width: 20%;
+const ListDateBox = styled(Grid)`
 	height: 60px;
 	background: #eee;
-	display: inline-block;
 `;
 
 export default props => {
-	// const format = "";
+	const format = props.format || 'DD/MM YYYY';
 
 	return(
-		<ListDateBox>
-			<Moment format="DD/MM YYYY">
+		<ListDateBox item xs={3}>
+			<Moment format={format}>
 				{props.children}
 			</Moment>
 		</ListDateBox>

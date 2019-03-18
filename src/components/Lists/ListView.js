@@ -4,15 +4,14 @@ import ListItem from './ListItem';
 import PostItems from '../../data/PostItems';
 
 const ListView = styled.div`
-	height: 100vh;
-	wight: 100%;
+	width: 100%;
 `;
 
 export default props => {
 	return(
 		<ListView>
 			{PostItems.map(post => (
-				<ListItem title={post.title} date={post.date} />
+				<ListItem key={post.uuid} title={post.title} date={post.date} />
 			))}
 		</ListView>
 	);

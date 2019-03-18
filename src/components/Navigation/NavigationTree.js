@@ -13,7 +13,7 @@ export default props => {
 	return(
 		<NavigationTree>
 			{NavigationTreeData.map(item => (
-				<NavigationItem label={item.name} />
+				<NavigationItem key={item.uuid} label={item.name} />
 			))}
 		</NavigationTree>
 	);

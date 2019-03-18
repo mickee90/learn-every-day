@@ -1,16 +1,19 @@
 import React from 'react';
 import ListView from '../components/Lists/ListView';
-import Menu from '@material-ui/icons/Menu';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import styled from 'styled-components';
 
 const Main = styled.div`
-	height: 50px;
+	position: relative;
+	height: calc(100vh - 50px);
 	border-bottom: 1px solid #000;
 `;
 
 const MenuStyle = {
-	'float': 'right',
-	'paddingTop': '12px'
+	'position': 'absolute',
+	'bottom': '10px',
+	'right': '10px',
+	'fontSize': '60px'
 };
 
 const handleClick = () => {
@@ -22,7 +25,7 @@ export default props => {
 	return(
 		<Main>
 			<ListView />
-			<Menu onClick={handleClick} style={MenuStyle} />
+			<AddCircleOutline onClick={handleClick} style={MenuStyle} />
 		</Main>
 	);
 };
