@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ListItem from './ListItem';
-import PostItems from '../../data/PostItems';
+import ListItem from '../components/List/ListItem';
+import PostItems from '../data/PostItems';
 
 const ListView = styled.div`
 	width: 100%;

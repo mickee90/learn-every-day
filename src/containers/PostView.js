@@ -1,5 +1,5 @@
 import React from 'react';
-import PostItems from '../../data/PostItems';
+import PostItems from '../data/PostItems';
 
 
 export default props => {

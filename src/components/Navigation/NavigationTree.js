@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import NavigationTreeData from '../../data/NavigationItems';
 import NavigationItem from './NavigationItem';
@@ -9,6 +9,11 @@ const NavigationTree = styled.div`
 `;
 
 export default props => {
+	// const [navigationState, setNavigationState] = useState({ NavigationTreeData });
+	//
+	// const switchNavigationHandler = () => {
+	// 	setNavigationState({ NavigationTreeData })
+	// };
 
 	return(
 		<NavigationTree>

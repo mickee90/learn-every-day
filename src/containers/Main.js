@@ -1,5 +1,5 @@
 import React from 'react';
-import ListView from '../components/Lists/ListView';
+import ListView from './ListView';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import styled from 'styled-components';
 
