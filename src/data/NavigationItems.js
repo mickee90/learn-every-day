@@ -1,32 +1,50 @@
 export default [
 	{
 		"id": 1,
-		"uuid": "097978-ds76adsa-16523-dsa-e12",
-		"name": "Create post",
-		"sort_order": 1
+		"path": "/add/post",
+		"title": "Create post",
+		"required_login": false,
+		"show_when_login": true,
+		"exact": true
 	},
 	{
 		"id": 2,
-		"uuid": "12df34-dsadsa-1hgf23-dsa-eghf12",
-		"name": "View posts",
-		"sort_order": 2
+		"path": "/posts",
+		"title": "View posts",
+		"required_login": false,
+		"show_when_login": true,
+		"exact": true
 	},
 	{
 		"id": 3,
-		"uuid": "dfgdg-ds34sa-12433-dsa-e12",
-		"name": "Login",
-		"sort_order": 3
+		"path": "/account/login",
+		"title": "Login",
+		"required_login": false,
+		"show_when_login": false,
+		"exact": true
 	},
 	{
 		"id": 4,
-		"uuid": "1f234-dsadsa-1gd23-dsa-e12",
-		"name": "Create account",
-		"sort_order": 4
+		"path": "/account/logout",
+		"title": "Logout",
+		"required_login": true,
+		"show_when_login": true,
+		"exact": true
 	},
 	{
 		"id": 5,
-		"uuid": "1fd234-34df-1j23-dsa-e12",
-		"name": "Logout",
-		"sort_order": 5
+		"path": "/account/create",
+		"title": "Create account",
+		"required_login": false,
+		"show_when_login": false,
+		"exact": true
+	},
+	{
+		"id": 6,
+		"path": "/account/create",
+		"title": "Create account",
+		"required_login": true,
+		"show_when_login": true,
+		"exact": true
 	}
 ]

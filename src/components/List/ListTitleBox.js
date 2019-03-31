@@ -3,8 +3,7 @@ import styled from 'styled-components/macro';
 import Grid from '@material-ui/core/Grid';
 
 const ListTitleBox = styled(Grid)`
-	// display: inline-block;
-	// height: 60px;
+	padding-top: 10px;
 `;
 
 export default props => {

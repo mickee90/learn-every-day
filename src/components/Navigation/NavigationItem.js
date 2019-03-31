@@ -1,6 +1,7 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import Label from '../../components/UI/Label';
+import Label from '../UI/Label';
 
 const NavigationItem = styled.div`
 	
@@ -9,7 +10,9 @@ const NavigationItem = styled.div`
 export default props => {
 	return(
 		<NavigationItem>
-			<Label>{props.label}</Label>
+			<NavLink to={props.path} exact={props.exact} onClick={props.closeMenuClick}>
+				<Label>{props.title}</Label>
+			</NavLink>
 		</NavigationItem>
 	);
 };

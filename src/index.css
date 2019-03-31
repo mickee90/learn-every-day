@@ -12,3 +12,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.clear {
+    clear: both;
+}
+
+.floatRight {
+    float: right;
+}
+
+.floatLeft {
+    float: left;
+}
+

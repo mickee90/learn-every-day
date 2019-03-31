@@ -9,6 +9,7 @@ export default [
 			Eller så säger man att den skall laddas in men med lägre prioritet.
 			"Fonten används troligtvis inte på just denna sidan så ladda ner den och cacha den när det finns tid över"`,
 		"sort_order": 1,
+		"user_id": 1
 	},
 	{
 		"id": 2,
@@ -16,7 +17,8 @@ export default [
 		"date": "2019-03-17",
 		"title": "PHP abstractions",
 		"content": "För att....",
-		"sort_order": 2
+		"sort_order": 2,
+		"user_id": 1
 	},
 	{
 		"id": 3,
@@ -24,7 +26,8 @@ export default [
 		"date": "2019-03-17",
 		"title": "React.js Hooks",
 		"content": "Hooks är det som gäller!",
-		"sort_order": 3
+		"sort_order": 3,
+		"user_id": 1
 	},
 	{
 		"id": 4,
@@ -32,7 +35,8 @@ export default [
 		"date": "2019-03-17",
 		"title": "React Native view",
 		"content": "Hur en lista i React Native fungerar",
-		"sort_order": 4
+		"sort_order": 4,
+		"user_id": 1
 	},
 	{
 		"id": 5,
@@ -40,7 +44,8 @@ export default [
 		"date": "2019-03-17",
 		"title": "React.js props and functions",
 		"content": "Props och functions...",
-		"sort_order": 5
+		"sort_order": 5,
+		"user_id": 1
 	},
 	{
 		"id": 6,
@@ -48,6 +53,7 @@ export default [
 		"date": "2019-03-17",
 		"title": "Hacka lök",
 		"content": "Börja med att skär av översta delen...",
-		"sort_order": 6
+		"sort_order": 6,
+		"user_id": 1
 	}
 ]

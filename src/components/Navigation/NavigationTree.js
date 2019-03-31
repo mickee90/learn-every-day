@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import NavigationTreeData from '../../data/NavigationItems';
 import NavigationItem from './NavigationItem';
@@ -18,7 +18,7 @@ export default props => {
 	return(
 		<NavigationTree>
 			{NavigationTreeData.map(item => (
-				<NavigationItem key={item.uuid} label={item.name} />
+				<NavigationItem key={item.id} {...item} closeMenuClick={props.closeMenuClick} />
 			))}
 		</NavigationTree>
 	);

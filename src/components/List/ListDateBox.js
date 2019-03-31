@@ -5,7 +5,11 @@ import Grid from '@material-ui/core/Grid';
 
 const ListDateBox = styled(Grid)`
 	height: 60px;
-	background: #eee;
+`;
+const MomentStyle = styled(Moment)`
+	display: block;
+    width: 40px;
+    margin: 10px auto;
 `;
 
 export default props => {
@@ -13,9 +17,11 @@ export default props => {
 
 	return(
 		<ListDateBox item xs={3}>
-			<Moment format={format}>
-				{props.children}
-			</Moment>
+			<div>
+				<MomentStyle format={format}>
+					{props.children}
+				</MomentStyle>
+			</div>
 		</ListDateBox>
 	);
 };
