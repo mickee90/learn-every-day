@@ -1,0 +1,81 @@
+import * as actionTypes from './actionTypes';
+import axios from '../../axios-posts';
+const uuidv1 = require('uuid/v1');
+
+export const createAuthUser = (user) => {
+	return {type: actionTypes.AUTH_SIGN_UP, user: user };
+};
+
+export const storeUser = (user) => {
+	return {type: actionTypes.STORE_USER, user: user };
+};
+
+export const createUser = (userData) => {
+	const user = {
+		...userData,
+		uuid: uuidv1(),
+		id: 1,
+		created: new Date(),
+		updated: new Date()
+	};
+
+	// Firebase require .json in the endpoint
+	axios.post('/users.json', user)
+		.then(response => {
+			this.setState({loading: false});
+			console.log(response.data);
+			// @todo add checks if empty user response + userAuth response
+			this.createAuthUser(response.data.username, response.data.password);
+			this.props.onCreateUser(user);
+		})
+		.catch(error => {
+			this.setState({loading: false});
+		});
+};
+
+export const updateUser = (userData) => {
+	const user = {
+		username: userData.username,
+		first_name: userData.first_name,
+		last_name: userData.last_name,
+		email: userData.email,
+		country: userData.country
+	};
+
+	axios.patch('/users/-LbU5W48S5mTUWsOhYan.json', user)
+		.then(response => {
+			this.setState({loading: false});
+			console.log(response.data);
+			const full_user = {
+				...this.state.user,
+				...user
+			};
+			alert('Done!');
+			return {type: actionTypes.STORE_USER, user: full_user};
+			// this.props.onStoreUser(full_user);
+			// this.props.history.push('/posts');
+		})
+		.catch(error => {
+			this.setState({loading: false});
+		});
+};
+
+export const getUser = (userUUID) => {
+	console.log('[users] getUser');
+	return dispatch => {
+		axios.get('/users.json', {
+			params: {
+				orderBy: '"uuid"',
+				equalTo: '"' + userUUID + '"'
+			}
+		})
+			.then(response => {
+				console.log(response.data);
+				console.log(response.data[Object.keys(response.data)[0]]);
+				dispatch(storeUser(response.data[Object.keys(response.data)[0]]));
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+};

@@ -33,7 +33,9 @@ export default props => {
 		<Backdrop show={props.open} clicked={props.toggleMenuClick} />
 		<SideDrawer className={visible}>
 			{/*<NavigationSearch />*/}
-			<NavigationTree closeMenuClick={props.closeMenuClick} />
+			<NavigationTree
+				isAuth={props.isAuth}
+				closeMenuClick={props.closeMenuClick} />
 		</SideDrawer>
 		</Aux>
 	);

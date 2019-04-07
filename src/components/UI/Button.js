@@ -1,11 +1,20 @@
 import React from 'react';
+
 import Button from '@material-ui/core/Button';
 import VpnKey from '@material-ui/icons/VpnKey';
+import styled from 'styled-components';
 
-const LoginBtn = {
-	float: 'right',
-	marginTop: '10px'
-};
+const ButtonStyle = styled(Button)`
+	&.LoginBtn {
+		float: right;
+		margin-top: 10px;
+	}
+	
+	&.SignUpBtn {
+		float: left;
+		margin-top: 10px;
+	}
+`;
 
 export default props => {
 	let classes = [];
@@ -14,15 +23,16 @@ export default props => {
 	}
 
 	return(
-		<Button
+		<ButtonStyle
 			variant={props.variant ? props.variant : "contained"}
 			color={props.color ? props.color : "primary"}
 			className={classes.join(' ')}
-			style={LoginBtn}
 			disabled={props.disabled}
+			type={props.type}
+			onClick={props.clicked}
 		>
 			{props.label}
 			<VpnKey style={{marginLeft: "10px"}}>{props.label}</VpnKey>
-		</Button>
+		</ButtonStyle>
 	);
 };

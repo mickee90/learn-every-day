@@ -18,7 +18,11 @@ export default props => {
 	return(
 		<NavigationTree>
 			{NavigationTreeData.map(item => (
-				<NavigationItem key={item.id} {...item} closeMenuClick={props.closeMenuClick} />
+				<NavigationItem
+					key={item.id}
+					{...item}
+					isAuth={props.isAuth}
+					closeMenuClick={props.closeMenuClick} />
 			))}
 		</NavigationTree>
 	);

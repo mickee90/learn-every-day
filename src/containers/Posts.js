@@ -5,7 +5,7 @@ import axios from '../axios-posts';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import PostItems from '../data/PostItems';
+// import PostItems from '../data/PostItems';
 import ListItem from '../components/List/ListItem';
 
 const PostsStyle = styled.div`
@@ -23,14 +23,6 @@ const AddIconStyle = styled(Fab)`
 	}
 `;
 
-// const addPostHandler = () => {
-// 	console.log('addPostHandler');
-// };
-//
-// const backClickHandler = () => {
-// 	console.log('backClickHandler');
-// };
-
 class Posts extends Component {
 	state = {
 		posts: [],
@@ -40,7 +32,7 @@ class Posts extends Component {
 	componentDidMount() {
 		axios.get('/posts.json', {
 			params: {
-				orderBy: "\"date\"",
+				orderBy: '"date"',
 				limitToLast: 10
 			}
 		})

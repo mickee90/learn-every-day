@@ -33,11 +33,12 @@ const AppBarStyle = styled(AppBar)`
 `;
 
 export default props => {
+	const path = (props.isAuth) ? '/posts' : '/';
 
 	return(
 		<AppBarStyle color="inherit">
 			<div className="container">
-				<NavLink to="/"><Slogan>{ props.slogan }</Slogan></NavLink>
+				<NavLink to={path}><Slogan>{ props.slogan }</Slogan></NavLink>
 				<MenuIcon onClick={props.toggleMenuClick} />
 			</div>
 		</AppBarStyle>

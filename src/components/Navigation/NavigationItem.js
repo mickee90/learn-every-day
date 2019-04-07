@@ -1,18 +1,29 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import { connect } from 'react-redux';
 import Label from '../UI/Label';
 
-const NavigationItem = styled.div`
-	
-`;
+const NavigationItem = props => {
+	const visible = (
+		(props.require_login && props.isAuth === true) ||
+		(props.show_when_login && props.isAuth === true) ||
+		(!props.show_when_login && !props.isAuth))
+		? {display: 'block'} : {display: 'none'};
+	const path = (props.extra_parameter) ? props.path + '/' + props.user[props.extra_parameter] : props.path;
 
-export default props => {
 	return(
-		<NavigationItem>
-			<NavLink to={props.path} exact={props.exact} onClick={props.closeMenuClick}>
+		<div>
+			<NavLink to={path} exact={props.exact} onClick={props.closeMenuClick} style={visible}>
 				<Label>{props.title}</Label>
 			</NavLink>
-		</NavigationItem>
+		</div>
 	);
 };
+
+const mapStateToProps = state => {
+	return {
+		user: state.user
+	}
+};
+
+export default connect(mapStateToProps)(NavigationItem);

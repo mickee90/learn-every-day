@@ -67,10 +67,6 @@ class Post extends Component {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		console.log('[Post] componentDidUpdate');
-		// console.log(prevProps);
-		// console.log(prevState);
-		// console.log(this.state);
-		// console.log(snapshot);
 	}
 
 	// @todo extend logic with a more dynamic way to validate fields

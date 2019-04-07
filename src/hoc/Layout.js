@@ -1,13 +1,9 @@
 import React, { Component }  from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Header from '../components/Navigation/Header';
-import Posts from '../containers/Posts';
-import PostView from '../components/Post/PostView';
-import Post from '../components/Post/Post';
 import SideDrawer from '../components/Navigation/SideDrawer';
 import styled from 'styled-components';
-import Login from '../containers/Login';
 
 const LayoutStyle = styled.div`
 	max-width: 400px;
@@ -41,21 +37,24 @@ class Layout extends Component {
 	};
 
 	render() {
+
 		return (
 			<LayoutStyle>
-				<Header slogan="Learn Every Day" toggleMenuClick={this.onClickMenuHandler} />
+				<Header
+					slogan="Learn Every Day"
+					isAuth={this.props.isAuth}
+					toggleMenuClick={this.onClickMenuHandler} />
 
 				<Main>
-					<Switch>
-						<Route path="/post/:uuid" component={PostView} />
-						<Route path="/edit/post/:uuid" component={Post} />
-						<Route path="/add/post" exact component={Post} />
-						<Route path="/posts" component={Posts} />
-						<Route path="/" component={Login} />
-					</Switch>
+					{this.props.children}
 				</Main>
 
-				<SideDrawer open={this.state.showSideDrawer} closeMenuClick={this.onClickNavHandler} toggleMenuClick={this.onClickMenuHandler} />
+				<SideDrawer
+					open={this.state.showSideDrawer}
+					closeMenuClick={this.onClickNavHandler}
+					toggleMenuClick={this.onClickMenuHandler}
+					isAuth={this.props.isAuth}
+				/>
 				{/*<footer />*/}
 			</LayoutStyle>
 		);
@@ -63,4 +62,10 @@ class Layout extends Component {
 	
 }
 
-export default Layout;
+const mapStateToProps = state => {
+	return {
+		isAuth: state.auth.token !== null
+	}
+};
+
+export default connect(mapStateToProps)(Layout);
