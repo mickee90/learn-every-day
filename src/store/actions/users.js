@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-posts';
-const uuidv1 = require('uuid/v1');
+import axios from '../../axios-default';
 
 export const createAuthUser = (user) => {
 	return {type: actionTypes.AUTH_SIGN_UP, user: user };
@@ -13,7 +12,6 @@ export const storeUser = (user) => {
 export const createUser = (userData) => {
 	const user = {
 		...userData,
-		uuid: uuidv1(),
 		id: 1,
 		created: new Date(),
 		updated: new Date()
@@ -58,24 +56,4 @@ export const updateUser = (userData) => {
 		.catch(error => {
 			this.setState({loading: false});
 		});
-};
-
-export const getUser = (userUUID) => {
-	console.log('[users] getUser');
-	return dispatch => {
-		axios.get('/users.json', {
-			params: {
-				orderBy: '"uuid"',
-				equalTo: '"' + userUUID + '"'
-			}
-		})
-			.then(response => {
-				console.log(response.data);
-				console.log(response.data[Object.keys(response.data)[0]]);
-				dispatch(storeUser(response.data[Object.keys(response.data)[0]]));
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
 };

@@ -11,7 +11,7 @@ export default props => {
 	return(
 		<ListView>
 			{PostItems.map(post => (
-				<ListItem key={post.uuid} title={post.title} date={post.date} />
+				<ListItem key={post.id} title={post.title} date={post.date} />
 			))}
 		</ListView>
 	);

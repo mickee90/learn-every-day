@@ -1,6 +1,8 @@
 import * as actionTypes from './actionTypes';
 import * as actions from './index';
-import axios from 'axios';
+import axios from '../../axios-default';
+import {storeUser} from './users';
+// import axios from 'axios';
 
 
 const authStart = () => {
@@ -23,13 +25,13 @@ export const authFail = (error) => {
 	};
 };
 
-export const checkAuthTimeout = (expireTime) => {
-	return dispatch => {
-		setTimeout(() => {
-			dispatch(logout());
-		}, expireTime * 1000);
-	};
-};
+// export const checkAuthTimeout = (expireTime) => {
+// 	return dispatch => {
+// 		setTimeout(() => {
+// 			dispatch(logout());
+// 		}, expireTime);
+// 	};
+// };
 
 export const authCheckStatus = () => {
 	return dispatch => {
@@ -41,9 +43,9 @@ export const authCheckStatus = () => {
 			if(expireTime <= new Date()) {
 				dispatch(logout());
 			} else {
-				const userId = localStorage.getItem('userId');
-				dispatch(authSuccess(token, userId));
-				dispatch(checkAuthTimeout((expireTime.getTime() - new Date().getTime()) / 1000));
+				const userUuid = localStorage.getItem('userUuid');
+				dispatch(authSuccess(token, userUuid));
+				// dispatch(checkAuthTimeout((expireTime.getTime() - new Date().getTime()) / 1000));
 			}
 		}
 	};
@@ -52,36 +54,33 @@ export const authCheckStatus = () => {
 export const logout = () => {
 	localStorage.removeItem('authToken');
 	localStorage.removeItem('authExpireDate');
-	localStorage.removeItem('userId');
+	localStorage.removeItem('userUuid');
 	return { type: actionTypes.LOGOUT };
 };
 
 // Use return dispatch to make it possible for async calls
 export const signUp = (username, password) => {
+	console.log('test');
 	return dispatch => {
 		dispatch(authStart());
 
-		const url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDMA6Q6MiyGSh_K3FkqjA4esf5WRRJA8so';
 		const userData = {
 			email: username,
 			password: password,
-			returnSecureToken: true
+			returnToken: true
 		};
 
-		axios.post(url, userData)
+		axios.post('/auth', userData)
 			.then(response => {
-				console.log(response.data);
+				console.log(response);
 				if(response.data) {
-					// const expireDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-					// localStorage.setItem('authToken', response.data.idToken);
-					// localStorage.setItem('authExpireDate', expireDate);
-					// localStorage.setItem('userId', response.data.localId);
-					dispatch(authSuccess(response.data));
+					// dispatch(authSuccess(response.data));
 				}
 			})
 			.catch(error => {
-				console.log(error.response.data.error);
-				dispatch(authFail(error.response.data.error));
+				console.log(error);
+				// console.log(error.response.data.error);
+				// dispatch(authFail(error.response.data.error));
 			});
 	}
 };
@@ -97,31 +96,31 @@ export const auth = (username, password) => {
 	return dispatch => {
 		dispatch(authStart());
 
-		const url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDMA6Q6MiyGSh_K3FkqjA4esf5WRRJA8so';
 		const userData = {
-			email: username,
-			password: password,
-			returnSecureToken: true
+			username,
+			password,
+			returnToken: true,
+			ignoreAuthCheck: true
 		};
 
-		axios.post(url, userData)
-		.then(response => {
-			console.log(response.data);
-			if(response.data) {
-				const expireDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-				localStorage.setItem('authToken', response.data.idToken);
-				localStorage.setItem('authExpireDate', expireDate);
-				localStorage.setItem('userId', response.data.localId);
-				dispatch(authSuccess(response.data));
-				dispatch(actions.getUser(response.data.localId));
-				dispatch(checkAuthTimeout(response.data.expiresIn));
-				this.props.history.push("/posts");
-				// dispatch({ type: actionTypes.SET_AUTH_REDIRECT_PATH, path: '/posts' });
-			}
-		})
-		.catch(error => {
-			console.log(error.response);
-			dispatch(authFail(error.response));
-		});
+		axios.post('/auth', userData)
+			.then(response => {
+				console.log(response);
+				if(response.data) {
+					const expireDate = response.data.content.auth_token_expire;
+					localStorage.setItem('authToken', response.data.content.auth_token);
+					localStorage.setItem('authExpireDate', expireDate);
+					localStorage.setItem('userUuid', response.data.content.uuid);
+					dispatch(authSuccess(response.data.content));
+					dispatch(actions.storeUser(response.data.content));
+					// dispatch(checkAuthTimeout(response.data.content.auth_token_expire));
+					// this.props.history.push("/posts");
+					dispatch({ type: actionTypes.SET_AUTH_REDIRECT_PATH, path: '/posts' });
+				}
+			})
+			.catch(error => {
+				console.log(error);
+				dispatch(authFail(error));
+			});
 	}
 };

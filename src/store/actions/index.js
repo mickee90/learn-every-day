@@ -1,7 +1,7 @@
 export {
 	createUser,
 	updateUser,
-	getUser
+	storeUser
 } from './users';
 
 export {

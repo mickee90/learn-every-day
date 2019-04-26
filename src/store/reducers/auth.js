@@ -3,7 +3,7 @@ import { updateObject } from '../utils';
 
 const initialState = {
 	token: null,
-	userId: null,
+	userUuid: null,
 	refreshToken: null,
 	expireTime: null,
 	error: null,
@@ -17,9 +17,9 @@ const authStart = (state, action) => {
 
 const authSuccess = (state, action) => {
 	return updateObject(state, {
-		token: action.idToken,
-		userId: action.localId,
-		refreshToken: action.refreshToken,
+		token: action.auth_token,
+		userUuid: action.uuid,
+		refreshToken: action.auth_refresh_token,
 		expireTime: new Date(new Date().getTime() + action.expiresIn * 1000),
 		error: false,
 		loading: false,
@@ -36,7 +36,7 @@ const resetError = (state, action) => {
 };
 
 const logout = (state, action) => {
-	return updateObject(state, { token: null, userId: null, error: null, loading: false });
+	return updateObject(state, { token: null, userUuid: null, error: null, loading: false });
 };
 
 const setAuthRedirectPath = (state, action) => {

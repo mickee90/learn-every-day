@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import axios from '../axios-posts';
+import axios from '../axios-default';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -30,32 +30,14 @@ class Posts extends Component {
 	};
 
 	componentDidMount() {
-		axios.get('/posts.json', {
-			params: {
-				orderBy: '"date"',
-				limitToLast: 10
-			}
-		})
+
+		axios.get('/posts')
 			.then(res => {
-				const fetchPosts = [];
-
-				for(let key in res.data) {
-					fetchPosts.push({
-						...res.data[key],
-						id: key
-					});
-				}
-
-				console.log(fetchPosts);
-
-				fetchPosts.reverse();
-				// let lastTenPosts = [];
-				// lastTenPosts = fetchPosts.filter(post => lastTenPosts.length <= 9);
-
-				// this.setState({loading:false, posts: lastTenPosts});
-				this.setState({loading:false, posts: fetchPosts});
+				console.log(res);
+				this.setState({loading:false, posts: res.data.content});
 			})
 			.catch(err => {
+				console.log(err);
 				this.setState({loading:false});
 			});
 	}
@@ -65,7 +47,7 @@ class Posts extends Component {
 		let postContent = (<div>Loading</div>);
 		if(!this.state.loading) {
 			postContent = this.state.posts.map(post => (
-				<ListItem key={post.uuid} link={'/post/' + post.uuid} exact={true} title={post.title} date={post.date} />
+				<ListItem key={post.id} link={'/post/' + post.id} exact={true} title={post.title} date={post.date} />
 			))
 		}
 

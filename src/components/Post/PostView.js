@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../../axios-posts';
+import axios from '../../axios-default';
 
 import Aux from '../../hoc/Aux';
 import Moment from 'react-moment';
@@ -23,24 +23,18 @@ const postView = (props) => {
 
 	useEffect(() => {
 		let post = {};
-		// axios.get('/posts.json?orderBy="uuid"&equalTo=' + props.match.params.uuid)
-		axios.get('/posts.json', {
-				params: {
-					orderBy: "\"uuid\"",
-					equalTo: '"' + props.match.params.uuid + '"'
-				}
-			})
+
+		axios.get('/posts/' + props.match.params.id)
 			.then(res => {
-				console.log(res);
-				if(Object.keys(res.data).length !== 0) {
-					post = res.data[Object.keys(res.data)];
+				if(Object.keys(res.data.content).length !== 0) {
+					post = res.data.content[0];
 					setPost(post);
 					setHasContent(true);
 				}
 				setLoading(false);
 			})
-			.catch(error => {
-				console.log(error);
+			.catch(err => {
+				console.log(err);
 				setLoading(false);
 			});
 	}, []);

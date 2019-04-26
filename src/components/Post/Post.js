@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from '../../axios-posts';
+import axios from '../../axios-default';
 
 import Aux from '../../hoc/Aux';
 import Input from '../UI/Input';

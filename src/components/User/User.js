@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
-// import axios from '../../axios-posts';
 
 import Aux from '../../hoc/Aux';
 import Input from '../UI/Input';
 import CheckIcon from '@material-ui/icons/Check';
 import styled from 'styled-components';
 import Fab from '@material-ui/core/Fab';
-import axios from '../../axios-posts';
+import axios from '../../axios-default';
 
-const uuidv1 = require('uuid/v1');
 
 const SaveIconStyle = styled(Fab)`
 	&& {
@@ -29,7 +27,6 @@ class User extends Component {
 		editMode = !!props.match.params.uuid;
 
 		let user = {
-			id: null,
 			uuid: null,
 			first_name: '',
 			last_name: '',
@@ -92,7 +89,6 @@ class User extends Component {
 	onCreateUser = () => {
 		const user = {
 			...this.state.user,
-			uuid: uuidv1(),
 			id: 1,
 			created: new Date(),
 			updated: new Date()

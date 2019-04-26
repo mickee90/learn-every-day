@@ -29,8 +29,8 @@ class App extends Component {
 		if(this.props.isAuth) {
 			routes = (
 				<Switch>
-					<Route path="/post/:uuid" component={PostView} />
-					<Route path="/edit/post/:uuid" component={Post} />
+					<Route path="/post/:id" component={PostView} />
+					<Route path="/edit/post/:id" component={Post} />
 					<Route path="/add/post" exact component={Post} />
 					<Route path="/posts" component={Posts} />
 					<Route path="/account/update/:uuid" component={User} />
