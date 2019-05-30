@@ -10,8 +10,6 @@ import CheckIcon from '@material-ui/icons/Check';
 import styled from 'styled-components';
 import Fab from '@material-ui/core/Fab';
 
-const uuidv1 = require('uuid/v1');
-
 const SaveIconStyle = styled(Fab)`
 	&& {
 		position: absolute;
@@ -31,10 +29,8 @@ class Post extends Component {
 				uuid: null,
 				user_id: null,
 				title: '',
-				date: new Date(),
-				content: '',
-				created: new Date(),
-				updated: new Date()
+				publish_date: new Date(),
+				content: ''
 			},
 			missingPost: false,
 			createMode: !!(props.match.path === '/add/post'),
@@ -96,7 +92,7 @@ class Post extends Component {
 			...this.state,
 			post: {
 				...this.state.post,
-				date: newDate
+				publish_date: newDate
 			}
 		});
 	};
@@ -105,16 +101,18 @@ class Post extends Component {
 		event.preventDefault();
 		this.setState({loading: true});
 
+		let publish_date_year = this.state.post.publish_date.getFullYear(),
+		 	publish_date_month = this.state.post.publish_date.getDate(),
+			publish_date_day = this.state.post.publish_date.getMonth();
+		if(publish_date_month<10) publish_date_month = '0' + publish_date_month;
+		if(publish_date_day<10) publish_date_day = '0' + publish_date_day;
+
 		const post = {
 			...this.state.post,
-			uuid: uuidv1(),
-			user_id: 1,
-			created: new Date(),
-			updated: new Date()
+			publish_date: `${publish_date_year}-${publish_date_month}-${publish_date_day}`
 		};
 
-		// Firebase require .json in the endpoint
-		axios.post('/posts.json', post)
+		axios.post('/posts', post)
 			.then(response => {
 				this.setState({loading: false});
 				this.props.history.push('/');
@@ -144,7 +142,7 @@ class Post extends Component {
 				<DatePicker
 					changed={this.handleDateChange}
 					name="date" placeholder="Date"
-					value={this.state.post.date} />
+					value={this.state.post.publish_date} />
 				<Textarea
 					changed={(event) => this.handleTextChange(event, 'content')}
 					type="text"

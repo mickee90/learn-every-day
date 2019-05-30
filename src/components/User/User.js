@@ -28,11 +28,11 @@ class User extends Component {
 
 		let user = {
 			uuid: null,
+			password: '',
 			first_name: '',
 			last_name: '',
 			username: '',
 			email: '',
-			country: '',
 			created: new Date(),
 			updated: new Date()
 		};
@@ -43,7 +43,7 @@ class User extends Component {
 				&& user.first_name.trim() !== ''
 				&& user.last_name.trim() !== ''
 				&& user.email.trim() !== ''
-				&& user.country.trim() !== ''
+				&& user.password.trim() !== ''
 				&& editMode);
 		}
 
@@ -71,11 +71,11 @@ class User extends Component {
 
 		updatedUser[inputElm] = event.target.value;
 
-		const formIsValid = !(updatedUser.username.trim() !== ''
+		const formIsValid = !(updatedUser.username.trim() !== '' 
+			&& updatedUser.password.trim() !== ''
 			&& updatedUser.first_name.trim() !== ''
 			&& updatedUser.last_name.trim() !== ''
 			&& updatedUser.email.trim() !== ''
-			&& updatedUser.country.trim() !== ''
 			&& (this.state.createMode || this.state.editMode));
 
 		this.setState({
@@ -89,21 +89,23 @@ class User extends Component {
 	onCreateUser = () => {
 		const user = {
 			...this.state.user,
-			id: 1,
+			ignoreAuthCheck: true,
 			created: new Date(),
 			updated: new Date()
 		};
+		console.log(user);
 
 		// Firebase require .json in the endpoint
-		axios.post('/users.json', user)
+		axios.post('/users', user)
 			.then(response => {
 				this.setState({loading: false});
 				console.log(response.data);
 				// @todo add checks if empty user response + userAuth response
 				// this.createAuthUser(response.data.username, response.data.password);
-				this.props.onCreateAuthUser(response.data.username, response.data.password);
+				this.props.onCreateAuthUser(response.data.username, user.password);
 			})
 			.catch(error => {
+				console.log(error.response.data.content);
 				this.setState({loading: false});
 			});
 	}
@@ -140,6 +142,13 @@ class User extends Component {
 					value={this.state.user.username}
 					required={true} />
 				<Input
+					changed={(event) => this.handleTextChange(event, 'password')}
+					type="password"
+					name="password"
+					placeholder="Password"
+					value={this.state.user.password}
+					required={true} />
+				<Input
 					changed={(event) => this.handleTextChange(event, 'first_name')}
 					type="text"
 					name="first_name"
@@ -159,13 +168,6 @@ class User extends Component {
 					name="email"
 					placeholder="E-mail"
 					value={this.state.user.email}
-					required={true} />
-				<Input
-					changed={(event) => this.handleTextChange(event, 'country')}
-					type="text"
-					name="country"
-					placeholder="Country"
-					value={this.state.user.country}
 					required={true} />
 
 				<SaveIconStyle color="secondary" disabled={this.state.saveDisabled}>

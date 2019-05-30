@@ -12,18 +12,16 @@ export const storeUser = (user) => {
 export const createUser = (userData) => {
 	const user = {
 		...userData,
-		id: 1,
 		created: new Date(),
 		updated: new Date()
 	};
 
-	// Firebase require .json in the endpoint
-	axios.post('/users.json', user)
+	axios.post('/users', user)
 		.then(response => {
 			this.setState({loading: false});
 			console.log(response.data);
 			// @todo add checks if empty user response + userAuth response
-			this.createAuthUser(response.data.username, response.data.password);
+			// this.createAuthUser(response.data.username, response.data.password);
 			this.props.onCreateUser(user);
 		})
 		.catch(error => {

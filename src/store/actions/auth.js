@@ -103,7 +103,7 @@ export const auth = (username, password) => {
 			ignoreAuthCheck: true
 		};
 
-		axios.post('/auth', userData)
+		axios.post('/Auth', userData)
 			.then(response => {
 				console.log(response);
 				if(response.data) {
