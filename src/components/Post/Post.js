@@ -22,7 +22,6 @@ const SaveIconStyle = styled(Fab)`
 class Post extends Component {
 	constructor(props) {
 		super(props);
-		console.log(props);
 
 		this.state = {
 			post: {
@@ -102,8 +101,9 @@ class Post extends Component {
 		this.setState({loading: true});
 
 		let publish_date_year = this.state.post.publish_date.getFullYear(),
-		 	publish_date_month = this.state.post.publish_date.getDate(),
-			publish_date_day = this.state.post.publish_date.getMonth();
+		 	publish_date_month = this.state.post.publish_date.getMonth(),
+			publish_date_day = this.state.post.publish_date.getDate();
+
 		if(publish_date_month<10) publish_date_month = '0' + publish_date_month;
 		if(publish_date_day<10) publish_date_day = '0' + publish_date_day;
 
@@ -115,7 +115,7 @@ class Post extends Component {
 		axios.post('/posts', post)
 			.then(response => {
 				this.setState({loading: false});
-				this.props.history.push('/');
+				this.props.history.push('/posts');
 			})
 			.catch(error => {
 				this.setState({loading: false});

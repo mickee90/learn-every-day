@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {NavLink, Redirect, withRouter} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import * as actions from '../store/actions/index';
 import styled from 'styled-components';
 
@@ -28,14 +28,6 @@ class Login extends Component {
 		}
 	}
 
-	signUp = () => {
-		if(this.state.username.trim() !== '' && this.state.password.length > 5) {
-			this.props.onSignUp(this.state.username, this.state.password);
-		} else {
-			this.props.onAuthFail({code: 400, message: 'Invalid credentials'})
-		}
-	};
-
 	handleSubmit(event) {
 		event.preventDefault();
 		this.props.onLogin(this.state.username, this.state.password);
@@ -51,10 +43,6 @@ class Login extends Component {
 		if(this.props.error) {
 			errorMessage = (<div style={{backgroundColor: 'red', padding: '10px', borderRadius: '10px', color: '#fff'}}>{this.props.error}</div>);
 		}
-		let redirect = null;
-		if(this.props.isAuth) {
-			redirect = (<Redirect to={this.props.authRedirect} />);
-		}
 
 		return (
 			<div style={{padding: '30px 20px'}}>
@@ -64,7 +52,7 @@ class Login extends Component {
 				</Slogan>
 
 				{errorMessage}
-				<form onSubmit={this.handleSubmit} autoComplete="off">
+				<form onSubmit={this.handleSubmit} autoComplete="off" className="clearFix">
 					<Input
 						changed={(event) => this.handleTextChange(event, 'username')}
 						type="email"
@@ -82,8 +70,7 @@ class Login extends Component {
 
 					<Button name="submit" type="submit" label="Login" classes="LoginBtn" />
 				</form>
-				<Button clicked={this.signUp} label="Sign up" classes="SignUpBtn" />
-				<NavLink to='/account/create'><Button label="Create Account" classes="SignUpBtn" /></NavLink>
+				<NavLink to='/account/create' className="textLink" style={{marginTop:'10px', float: 'right'}}>Create Account</NavLink>
 			</div>
 		);
 	};
@@ -91,19 +78,15 @@ class Login extends Component {
 
 const mapStateToProps = state => {
 	return {
-		isAuth: state.auth.token !== null,
 		error: state.auth.error,
 		loading: state.auth.loading,
-		authRedirect: state.auth.authRedirectPath
 	}
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		onLogin: (username, password) => dispatch(actions.auth(username, password)),
-		onSignUp: (username, password) => dispatch(actions.signUp(username, password)),
-		onResetError: () => dispatch(actions.resetError()),
-		onAuthFail: (error) => dispatch(actions.authFail(error))
+		onLogin: (username, password) => dispatch(actions.auth(username, password, ownProps)),
+		onResetError: () => dispatch(actions.resetError())
 	}
 };
 

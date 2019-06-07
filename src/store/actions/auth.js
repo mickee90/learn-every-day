@@ -74,7 +74,7 @@ export const signUp = (username, password) => {
 			.then(response => {
 				console.log(response);
 				if(response.data) {
-					// dispatch(authSuccess(response.data));
+					dispatch(authSuccess(response.data));
 				}
 			})
 			.catch(error => {
@@ -92,7 +92,7 @@ export const resetError = () => {
 };
 
 // Use return dispatch to make it possible for async calls
-export const auth = (username, password) => {
+export const auth = (username, password, ownProps) => {
 	return dispatch => {
 		dispatch(authStart());
 
@@ -103,7 +103,7 @@ export const auth = (username, password) => {
 			ignoreAuthCheck: true
 		};
 
-		axios.post('/Auth', userData)
+		axios.post('/auth', userData)
 			.then(response => {
 				console.log(response);
 				if(response.data) {
@@ -111,11 +111,10 @@ export const auth = (username, password) => {
 					localStorage.setItem('authToken', response.data.content.auth_token);
 					localStorage.setItem('authExpireDate', expireDate);
 					localStorage.setItem('userUuid', response.data.content.uuid);
-					dispatch(authSuccess(response.data.content));
 					dispatch(actions.storeUser(response.data.content));
-					// dispatch(checkAuthTimeout(response.data.content.auth_token_expire));
-					// this.props.history.push("/posts");
-					dispatch({ type: actionTypes.SET_AUTH_REDIRECT_PATH, path: '/posts' });
+					dispatch(authSuccess(response.data.content));
+					
+					ownProps.history.push('/posts');
 				}
 			})
 			.catch(error => {

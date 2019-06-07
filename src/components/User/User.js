@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions/index';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Aux from '../../hoc/Aux';
 import Input from '../UI/Input';
 import CheckIcon from '@material-ui/icons/Check';
 import styled from 'styled-components';
 import Fab from '@material-ui/core/Fab';
-import axios from '../../axios-default';
-
 
 const SaveIconStyle = styled(Fab)`
 	&& {
@@ -58,12 +58,12 @@ class User extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		console.log('[User] componentDidUpdate');
+		// console.log('[User] componentDidUpdate');
 	}
 
 	// @todo extend logic with a more dynamic way to validate fields
 	handleTextChange  = (event, inputElm) => {
-		console.log('[user] handleTextChange');
+		// console.log('[user] handleTextChange');
 
 		const updatedUser = {
 			...this.state.user
@@ -86,37 +86,12 @@ class User extends Component {
 
 	};
 
-	onCreateUser = () => {
-		const user = {
-			...this.state.user,
-			ignoreAuthCheck: true,
-			created: new Date(),
-			updated: new Date()
-		};
-		console.log(user);
-
-		// Firebase require .json in the endpoint
-		axios.post('/users', user)
-			.then(response => {
-				this.setState({loading: false});
-				console.log(response.data);
-				// @todo add checks if empty user response + userAuth response
-				// this.createAuthUser(response.data.username, response.data.password);
-				this.props.onCreateAuthUser(response.data.username, user.password);
-			})
-			.catch(error => {
-				console.log(error.response.data.content);
-				this.setState({loading: false});
-			});
-	}
-
 	submitUserHandler = (event) => {
 		event.preventDefault();
 		this.setState({loading: true});
 
 		if(this.state.createMode) {
-			// this.props.onCreateUser(this.state.user);
-			this.onCreateUser();
+			this.props.onCreateUser(this.state.user);
 		} else if(this.state.editMode) {
 			this.props.onEditUser(this.state.user);
 		} else {
@@ -128,10 +103,13 @@ class User extends Component {
 		let userContent = '';
 
 		if(this.state.loading) {
+			console.log('loading');
 			userContent = (<div style={{padding: '10px'}}>Loading...</div>);
 		} else if(this.state.missingUser) {
+			console.log('missingUser');
 			userContent = (<div style={{padding: '10px'}}>No user was found with this ID</div>);
 		} else {
+			console.log('else');
 			userContent = (
 			<div style={{padding: '10px'}}>
 				<Input
@@ -183,21 +161,21 @@ class User extends Component {
 			</Aux>
 		);
 	}
-
 }
 
 const mapStateToProps = state => {
 	return {
 		user: state.user.user,
-		isLoggedIn: state.isLoggedIn
+		isLoggedIn: state.isLoggedIn,
+		authRedirectPath: state.auth.authRedirectPath
 	}
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onEditUser: (user) => dispatch(actions.updateUser(user)),
-		onCreateAuthUser: (username, password) => dispatch(actions.signUp(username, password))
+		onCreateUser: (user) => dispatch(actions.createUser(user, ownProps))
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(User));

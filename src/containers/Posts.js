@@ -30,6 +30,7 @@ class Posts extends Component {
 	};
 
 	componentDidMount() {
+		console.log('[Posts] didMount');
 
 		axios.get('/posts')
 			.then(res => {
