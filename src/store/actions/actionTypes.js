@@ -8,4 +8,6 @@ export const SET_AUTH_REDIRECT_PATH = 'SET_AUTH_REDIRECT_PATH';
 
 export const STORE_USER = 'STORE_USER';
 export const CREATE_USER = 'CREATE_USER';
+export const UPDATE_USER_START = 'UPDATE_USER_START';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 // export const GET_USER = 'GET_USER';

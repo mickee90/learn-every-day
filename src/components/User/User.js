@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions/index';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -22,12 +21,20 @@ const SaveIconStyle = styled(Fab)`
 class User extends Component {
 	constructor(props) {
 		super(props);
+		console.log('[User] constructor');
 		let formIsValid = true,
 		createMode = !!(props.match.path === '/account/create'),
 		editMode = !!props.match.params.uuid;
 
+		const userUuid = localStorage.getItem('userUuid');
+
+		if(userUuid && this.props.uuid === '') {
+			console.log('[User] constructor onPopulateUser');
+			this.props.onPopulateUser(userUuid);
+		}
+
 		let user = {
-			uuid: null,
+			uuid: (editMode) ? props.match.params.uuid : null,
 			password: '',
 			first_name: '',
 			last_name: '',
@@ -36,14 +43,16 @@ class User extends Component {
 			created: new Date(),
 			updated: new Date()
 		};
+		
+		console.log('[User] constructor post onPopulateUser', this.props.user.first_name);
+
 		if(this.props.isLoggedIn && Object.keys(this.props.user).length !== 0) {
 			user = this.props.user;
-			console.log(user.username);
+			
 			formIsValid = !(user.username.trim() !== ''
 				&& user.first_name.trim() !== ''
 				&& user.last_name.trim() !== ''
 				&& user.email.trim() !== ''
-				&& user.password.trim() !== ''
 				&& editMode);
 		}
 
@@ -52,16 +61,16 @@ class User extends Component {
 			missingUser: false,
 			createMode: createMode,
 			editMode: editMode,
-			saveDisabled: formIsValid,
-			loading: false
+			saveDisabled: formIsValid
 		};
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		// console.log('[User] componentDidUpdate');
+		console.log('[User] componentDidUpdate');
 	}
 
 	// @todo extend logic with a more dynamic way to validate fields
+	// @todo add logic for password checking (Req for createUser but not for update)
 	handleTextChange  = (event, inputElm) => {
 		// console.log('[user] handleTextChange');
 
@@ -71,8 +80,7 @@ class User extends Component {
 
 		updatedUser[inputElm] = event.target.value;
 
-		const formIsValid = !(updatedUser.username.trim() !== '' 
-			&& updatedUser.password.trim() !== ''
+		const formIsValid = !(updatedUser.username.trim() !== ''
 			&& updatedUser.first_name.trim() !== ''
 			&& updatedUser.last_name.trim() !== ''
 			&& updatedUser.email.trim() !== ''
@@ -88,7 +96,6 @@ class User extends Component {
 
 	submitUserHandler = (event) => {
 		event.preventDefault();
-		this.setState({loading: true});
 
 		if(this.state.createMode) {
 			this.props.onCreateUser(this.state.user);
@@ -102,14 +109,11 @@ class User extends Component {
 	render() {
 		let userContent = '';
 
-		if(this.state.loading) {
-			console.log('loading');
+		if(this.props.user.loading) {
 			userContent = (<div style={{padding: '10px'}}>Loading...</div>);
 		} else if(this.state.missingUser) {
-			console.log('missingUser');
 			userContent = (<div style={{padding: '10px'}}>No user was found with this ID</div>);
 		} else {
-			console.log('else');
 			userContent = (
 			<div style={{padding: '10px'}}>
 				<Input
@@ -118,14 +122,12 @@ class User extends Component {
 					name="username"
 					placeholder="Username"
 					value={this.state.user.username}
-					required={true} />
+					disabled />
 				<Input
 					changed={(event) => this.handleTextChange(event, 'password')}
 					type="password"
 					name="password"
-					placeholder="Password"
-					value={this.state.user.password}
-					required={true} />
+					placeholder="Password" />
 				<Input
 					changed={(event) => this.handleTextChange(event, 'first_name')}
 					type="text"
@@ -165,8 +167,9 @@ class User extends Component {
 
 const mapStateToProps = state => {
 	return {
-		user: state.user.user,
-		isLoggedIn: state.isLoggedIn,
+		user: state.user,
+		uuid: state.auth.uuid || '',
+		isLoggedIn: state.auth.token !== null,
 		authRedirectPath: state.auth.authRedirectPath
 	}
 };
@@ -174,7 +177,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onEditUser: (user) => dispatch(actions.updateUser(user)),
-		onCreateUser: (user) => dispatch(actions.createUser(user, ownProps))
+		onCreateUser: (user) => dispatch(actions.createUser(user, ownProps)),
+		onPopulateUser: (userUuid) => dispatch(actions.userPopulateProps(userUuid))
 	}
 };
 

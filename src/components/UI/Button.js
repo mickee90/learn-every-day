@@ -9,11 +9,6 @@ const ButtonStyle = styled(Button)`
 		float: right;
 		margin-top: 10px;
 	}
-	
-	&.SignUpBtn {
-		float: left;
-		margin-top: 10px;
-	}
 `;
 
 export default props => {

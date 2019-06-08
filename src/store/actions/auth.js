@@ -1,9 +1,6 @@
 import * as actionTypes from './actionTypes';
 import * as actions from './index';
 import axios from '../../axios-default';
-import {storeUser} from './users';
-// import axios from 'axios';
-
 
 const authStart = () => {
 	return { type: actionTypes.AUTH_START };
@@ -33,7 +30,19 @@ export const authFail = (error) => {
 // 	};
 // };
 
+export const authPopulateProps = () => {
+	console.log('[auth] authPopulateProps');
+	const localAuthInfo = {
+		auth_token: localStorage.getItem('authToken'),
+		uuid: localStorage.getItem('userUuid'),
+		auth_refresh_token: localStorage.getItem('refreshToken')
+	}
+	return authSuccess(localAuthInfo);
+}
+
 export const authCheckStatus = () => {
+	console.log('[auth] authCheckStatus');
+
 	return dispatch => {
 		const token = localStorage.getItem('authToken');
 		if(!token) {
@@ -55,34 +64,8 @@ export const logout = () => {
 	localStorage.removeItem('authToken');
 	localStorage.removeItem('authExpireDate');
 	localStorage.removeItem('userUuid');
+	localStorage.removeItem('user');
 	return { type: actionTypes.LOGOUT };
-};
-
-// Use return dispatch to make it possible for async calls
-export const signUp = (username, password) => {
-	console.log('test');
-	return dispatch => {
-		dispatch(authStart());
-
-		const userData = {
-			email: username,
-			password: password,
-			returnToken: true
-		};
-
-		axios.post('/auth', userData)
-			.then(response => {
-				console.log(response);
-				if(response.data) {
-					dispatch(authSuccess(response.data));
-				}
-			})
-			.catch(error => {
-				console.log(error);
-				// console.log(error.response.data.error);
-				// dispatch(authFail(error.response.data.error));
-			});
-	}
 };
 
 export const resetError = () => {

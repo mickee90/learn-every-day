@@ -1,16 +1,67 @@
 import * as actionTypes from './actionTypes';
 import * as actions from './index';
 import axios from '../../axios-default';
-import { push } from 'react-router-redux';
-import { browserHistory } from 'react-router';
 
 export const createAuthUser = (user) => {
 	return {type: actionTypes.AUTH_SIGN_UP, user: user };
 };
 
 export const storeUser = (user) => {
+	localStorage.setItem('user', JSON.stringify(user));
 	return {type: actionTypes.STORE_USER, user: user };
 };
+
+export const updateUserStart = (user) => {
+	return {type: actionTypes.UPDATE_USER_START };
+};
+
+export const updateUserSuccess = (user) => {
+	return {type: actionTypes.UPDATE_USER_SUCCESS };
+};
+
+export const userPopulateProps = (uuid) => {
+	console.log('[users] userPopulateProps');
+	return dispatch => {
+		axios.get('/users/' + uuid)
+		.then(response => {
+			const user = {
+				uuid: response.data.content.uuid || '',
+				username: response.data.content.username || '',
+				first_name: response.data.content.first_name || '',
+				last_name: response.data.content.last_name || '',
+				email: response.data.content.email || ''
+			}
+			dispatch(storeUser(user));
+		})
+		.catch(error => {
+			console.log(error);
+		})
+	}
+}
+
+// export const getUser = (uuid) => {
+// 	// return dispatch => {
+// 		axios.get('/users/' + uuid)
+// 		.then(response => {
+// 			console.log(response);
+// 			if(response.data) {
+// 				console.log(response.data);
+// 				const user = {
+// 					uuid: response.data.content.uuid,
+// 					username: response.data.content.username,
+// 					first_name: response.data.content.first_name,
+// 					last_name: response.data.content.last_name,
+// 					email: response.data.content.email
+// 				}
+// 				console.log('[users] -> user', user);
+// 				return user;
+// 			}
+// 		})
+// 		.catch(error => {
+// 			console.log(error);
+// 		})
+// 	// }
+// }
 
 export const createUser = (userData, ownProps) => {
 	return dispatch => {
@@ -21,43 +72,40 @@ export const createUser = (userData, ownProps) => {
 		};
 	
 		axios.post('/users', user)
-			.then(response => {
-				dispatch(actions.auth(response.data.content.username, user.password, ownProps));
-				//dispatch({ type: actionTypes.SET_AUTH_REDIRECT_PATH, path: '/posts' });
-				// return browserHistory.push('/posts');
-				// dispatch(push('/posts'));
-			})
-			.catch(error => {
-				console.log(error.response.data.content);
-				this.setState({loading: false});
-			});
+		.then(response => {
+			dispatch(actions.auth(response.data.content.username, user.password, ownProps));
+		})
+		.catch(error => {
+			console.log(error.response.data.content);
+			this.setState({loading: false});
+		});
 	}
 };
 
 export const updateUser = (userData) => {
-	let user = {
-		username: userData.username,
-		first_name: userData.first_name,
-		last_name: userData.last_name,
-		email: userData.email,
-		country: userData.country
-	};
-	if(userData.password !== '') user.password = userData.password;
-
-	axios.patch('/users', user)
+	return dispatch => {
+		dispatch(updateUserStart());
+		
+		let user = {
+			username: userData.username,
+			first_name: userData.first_name,
+			last_name: userData.last_name,
+			email: userData.email,
+			country: userData.country
+		};
+		if(userData.password !== '') user.password = userData.password;
+	
+		axios.patch('/users/' + userData.uuid, user)
 		.then(response => {
-			this.setState({loading: false});
-			console.log(response.data);
 			const full_user = {
-				...this.state.user,
 				...user
 			};
-			alert('Done!');
-			return {type: actionTypes.STORE_USER, user: full_user};
-			// this.props.onStoreUser(full_user);
-			// this.props.history.push('/posts');
+			console.log('[patch response] ', full_user);
+			dispatch(storeUser(full_user));
+			dispatch(updateUserSuccess());
 		})
 		.catch(error => {
-			this.setState({loading: false});
+			console.log(error);
 		});
+	}
 };

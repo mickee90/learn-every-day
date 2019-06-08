@@ -1,14 +1,15 @@
 export {
 	createUser,
 	updateUser,
-	storeUser
+	storeUser,
+	userPopulateProps
 } from './users';
 
 export {
 	auth,
-	signUp,
 	resetError,
 	logout,
 	authFail,
-	authCheckStatus
+	authCheckStatus,
+	authPopulateProps
 } from './auth';

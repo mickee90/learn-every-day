@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Layout from './hoc/Layout';
 import * as actions from './store/actions/index';
@@ -13,7 +13,29 @@ import Post from './components/Post/Post';
 import Posts from './containers/Posts';
 
 class App extends Component {
+
+	componentWillUpdate() {
+		// console.log('[App.js] componentWillUpdate', this.props.auth, this.props.user);
+		// const userUuid = localStorage.getItem('userUuid');
+
+		// if(userUuid && (this.props.auth.userUuid === undefined || this.props.auth.userUuid === null)) {
+		// 	this.props.onPopulateAuth();
+		// 	// this.props.onPopulateUser(userUuid);
+		// }
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		// console.log('[App.js] componentDidUpdate', this.props.auth, this.props.user);
+		// const userUuid = localStorage.getItem('userUuid');
+
+		// if(userUuid && (this.props.auth.userUuid === undefined || this.props.auth.userUuid === null)) {
+		// 	this.props.onPopulateAuth();
+		// 	this.props.onPopulateUser(userUuid);
+		// }
+	}
+
 	componentDidMount() {
+		// console.log('[App.js] componentDidMount', this.props.auth, this.props.user);
 		this.props.onAuthSignIn();
 	}
 
@@ -52,12 +74,16 @@ class App extends Component {
 const mapDispatchToProps = dispatch => {
 	return {
 		onAuthSignIn: () => dispatch(actions.authCheckStatus()),
-		onLogout: () => dispatch(actions.logout())
+		onLogout: () => dispatch(actions.logout()),
+		onPopulateAuth: () => dispatch(actions.authPopulateProps()),
+		onPopulateUser: (userUuid) => dispatch(actions.userPopulateProps(userUuid))
 	};
 };
 const mapStateToProps = state => {
 	return {
-		isAuth: state.auth.token !== null
+		isAuth: state.auth.token !== null,
+		auth: state.auth,
+		user: state.user
 	}
 };
 
