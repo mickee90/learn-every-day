@@ -19,3 +19,6 @@ export const GET_POST = 'GET_POST';
 export const STORE_POST = 'STORE_POST';
 export const CREATE_POST = 'CREATE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
+export const START_POST_LOADER = 'START_POST_LOADER';
+export const STOP_POST_LOADER = 'STOP_POST_LOADER';
+export const SET_POST_ERROR = 'SET_POST_ERROR';

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import axios from '../axios-default';
+import * as actions from '../store/actions/index';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-// import PostItems from '../data/PostItems';
 import ListItem from '../components/List/ListItem';
 
 const PostsStyle = styled.div`
@@ -24,30 +24,15 @@ const AddIconStyle = styled(Fab)`
 `;
 
 class Posts extends Component {
-	state = {
-		posts: [],
-		loading: true
-	};
-
 	componentDidMount() {
+		this.props.onFetchPosts();
 		console.log('[Posts] didMount');
-
-		axios.get('/posts')
-			.then(res => {
-				console.log(res);
-				this.setState({loading:false, posts: res.data.content});
-			})
-			.catch(err => {
-				console.log(err);
-				this.setState({loading:false});
-			});
 	}
-
 
 	render() {
 		let postContent = (<div>Loading</div>);
-		if(!this.state.loading) {
-			postContent = this.state.posts.map(post => (
+		if(!this.props.loading) {
+			postContent = this.props.posts.map(post => (
 				<ListItem key={post.id} link={'/post/' + post.id} exact={true} title={post.title} date={post.date} />
 			))
 		}
@@ -65,4 +50,18 @@ class Posts extends Component {
 	}
 }
 
-export default Posts;
+const mapStateToProps = state => {
+	return {
+		posts: state.post.posts,
+		loading: state.post.loading,
+		error: state.post.error
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		onFetchPosts: () => dispatch(actions.getPosts())
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

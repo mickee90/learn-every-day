@@ -1,22 +1,24 @@
 import * as actionTypes from './actionTypes';
-import * as actions from './index';
-import axios from '../../axios';
+import axios from '../../axios-default';
 
 export const getPosts = () => {
     return dispatch => {
-        dispatch(action.startPostLoader());
+        dispatch({type: actionTypes.START_POST_LOADER });
 
         axios.get('/posts')
 			.then(res => {
                 console.log(res);
-                dispatch(action.storePosts({posts: res.data.content }));
-                dispatch(action.stopPostLoader());
-				// this.setState({loading:false, posts: res.data.content});
+                dispatch({ type: actionTypes.STORE_POSTS, posts: res.data.content });
+                dispatch({type: actionTypes.STOP_POST_LOADER});
 			})
 			.catch(err => {
 				console.log(err);
-                dispatch(action.stopPostLoader());
-                dispatch(action.setPostError(err.response.data));
+                dispatch({type: actionTypes.STOP_POST_LOADER});
+                dispatch(setPostError(err.response.data));
 			});
     }
+}
+
+export const setPostError = (error) => {
+    return { type: actionTypes.SET_POST_ERROR, error: {code: error.status_code, message: error.content }};
 }

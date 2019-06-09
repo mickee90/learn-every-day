@@ -16,8 +16,8 @@ export {
 
 export {
 	getPosts,
-	createPost,
-	updatePost,
-	startPostLoader,
-	stopPostLoader
+	// createPost,
+	// updatePost,
+	// startPostLoader,
+	// stopPostLoader
 } from './posts';
