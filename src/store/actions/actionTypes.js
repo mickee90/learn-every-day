@@ -12,3 +12,10 @@ export const CLEAR_USER = 'CLEAR_USER';
 export const UPDATE_USER_START = 'UPDATE_USER_START';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 // export const GET_USER = 'GET_USER';
+
+export const GET_POSTS = 'GET_POSTS';
+export const STORE_POSTS = 'STORE_POSTS';
+export const GET_POST = 'GET_POST';
+export const STORE_POST = 'STORE_POST';
+export const CREATE_POST = 'CREATE_POST';
+export const UPDATE_POST = 'UPDATE_POST';
