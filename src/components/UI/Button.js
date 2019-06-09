@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
-import VpnKey from '@material-ui/icons/VpnKey';
+// import VpnKey from '@material-ui/icons/VpnKey';
 import styled from 'styled-components';
 
 const ButtonStyle = styled(Button)`
@@ -27,7 +27,6 @@ export default props => {
 			onClick={props.clicked}
 		>
 			{props.label}
-			<VpnKey style={{marginLeft: "10px"}}>{props.label}</VpnKey>
 		</ButtonStyle>
 	);
 };

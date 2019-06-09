@@ -4,7 +4,6 @@ import { updateObject } from '../utils';
 const initialState = {
 	token: null,
 	userUuid: null,
-	refreshToken: null,
 	expireTime: null,
 	error: null,
 	loading: false,
@@ -19,8 +18,7 @@ const authSuccess = (state, action) => {
 	return updateObject(state, {
 		token: action.auth_token,
 		userUuid: action.uuid,
-		refreshToken: action.auth_refresh_token,
-		expireTime: new Date(new Date().getTime() + action.expiresIn * 1000),
+		expireTime: new Date(action.auth_token_expire),
 		error: false,
 		loading: false,
 		authRedirectPath: action.redirect
@@ -36,7 +34,7 @@ const resetError = (state, action) => {
 };
 
 const logout = (state, action) => {
-	return updateObject(state, { token: null, userUuid: null, error: null, loading: false });
+	return updateObject(state, initialState);
 };
 
 const setAuthRedirectPath = (state, action) => {

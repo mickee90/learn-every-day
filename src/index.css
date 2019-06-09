@@ -18,6 +18,10 @@ a {
     text-decoration: none;
 }
 
+#root {
+  background: #82b74b;
+}
+
 .fullWidth {
     width: 100%;
 }

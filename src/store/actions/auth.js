@@ -7,35 +7,27 @@ const authStart = () => {
 };
 
 const authSuccess = (authData) => {
+	console.log('[auth.js] authSuccess', authData);
 	return {
 		type: actionTypes.AUTH_SUCCESS,
-		...authData,
-		redirect: '/posts'
+		...authData
 	};
 };
 
 export const authFail = (error) => {
 	return {
 		type: actionTypes.AUTH_FAIL,
-		error_code: error.code,
-		error_msg: error.message
+		error_code: error.status_code,
+		error_msg: error.content
 	};
 };
-
-// export const checkAuthTimeout = (expireTime) => {
-// 	return dispatch => {
-// 		setTimeout(() => {
-// 			dispatch(logout());
-// 		}, expireTime);
-// 	};
-// };
 
 export const authPopulateProps = () => {
 	console.log('[auth] authPopulateProps');
 	const localAuthInfo = {
 		auth_token: localStorage.getItem('authToken'),
 		uuid: localStorage.getItem('userUuid'),
-		auth_refresh_token: localStorage.getItem('refreshToken')
+		auth_token_expire: localStorage.getItem('authExpireDate')
 	}
 	return authSuccess(localAuthInfo);
 }
@@ -52,26 +44,25 @@ export const authCheckStatus = () => {
 			if(expireTime <= new Date()) {
 				dispatch(logout());
 			} else {
-				const userUuid = localStorage.getItem('userUuid');
-				dispatch(authSuccess(token, userUuid));
-				// dispatch(checkAuthTimeout((expireTime.getTime() - new Date().getTime()) / 1000));
+				dispatch(authPopulateProps());
 			}
 		}
 	};
 };
 
 export const logout = () => {
-	localStorage.removeItem('authToken');
-	localStorage.removeItem('authExpireDate');
-	localStorage.removeItem('userUuid');
-	localStorage.removeItem('user');
-	return { type: actionTypes.LOGOUT };
+	return dispatch => {
+		localStorage.removeItem('authToken');
+		localStorage.removeItem('authExpireDate');
+		localStorage.removeItem('userUuid');
+		localStorage.removeItem('user');
+		dispatch( { type: actionTypes.CLEAR_USER });
+		dispatch( { type: actionTypes.LOGOUT });
+	}
 };
 
 export const resetError = () => {
-	return {
-		type: actionTypes.AUTH_RESET_ERROR
-	}
+	return { type: actionTypes.AUTH_RESET_ERROR }
 };
 
 // Use return dispatch to make it possible for async calls
@@ -101,8 +92,7 @@ export const auth = (username, password, ownProps) => {
 				}
 			})
 			.catch(error => {
-				console.log(error);
-				dispatch(authFail(error));
+				dispatch(authFail(error.response.data));
 			});
 	}
 };

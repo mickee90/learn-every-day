@@ -15,6 +15,7 @@ import Posts from './containers/Posts';
 class App extends Component {
 
 	componentWillUpdate() {
+		console.log('[App] componentWillUpdate');
 		// console.log('[App.js] componentWillUpdate', this.props.auth, this.props.user);
 		// const userUuid = localStorage.getItem('userUuid');
 
@@ -25,6 +26,7 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
+		console.log('[App] componentDidUpdate');
 		// console.log('[App.js] componentDidUpdate', this.props.auth, this.props.user);
 		// const userUuid = localStorage.getItem('userUuid');
 
@@ -35,6 +37,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		console.log('[App] componentDidMount');
 		// console.log('[App.js] componentDidMount', this.props.auth, this.props.user);
 		this.props.onAuthSignIn();
 	}

@@ -40,7 +40,7 @@ const postView = (props) => {
 	}, []);
 
 	let content = (
-		<Paper style={{padding: '10px'}}>
+		<Paper style={{padding: '10px', boxShadow: 'none'}}>
 			<Typography component="p">
 					Loading
 			</Typography>
@@ -48,7 +48,7 @@ const postView = (props) => {
 	);
 	if(!hasContent && !loading) {
 		content = (
-			<Paper style={{padding: '10px'}}>
+			<Paper style={{padding: '10px', boxShadow: 'none'}}>
 				<Typography component="p">
 					The post was not found
 				</Typography>
@@ -56,7 +56,7 @@ const postView = (props) => {
 		);
 	} else if(hasContent && !loading) {
 		content = (
-			<Paper style={{padding: '10px'}}>
+			<Paper style={{padding: '10px', boxShadow: 'none'}}>
 				<Typography variant="h5" component="h3">
 					{post.title}
 				</Typography>

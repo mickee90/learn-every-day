@@ -69,6 +69,10 @@ class User extends Component {
 		console.log('[User] componentDidUpdate');
 	}
 
+	componentWillUpdate() {
+		console.log('[User] componentWillUpdate');
+	}
+
 	// @todo extend logic with a more dynamic way to validate fields
 	// @todo add logic for password checking (Req for createUser but not for update)
 	handleTextChange  = (event, inputElm) => {
