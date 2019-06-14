@@ -2,6 +2,12 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+const backdrop = (props) => (
+	props.show ? <Backdrop onClick={props.clicked}></Backdrop> : null
+);
+
+export default backdrop;
+
 const Backdrop = styled.div`
     width: 100%;
     height: 100%;
@@ -11,9 +17,3 @@ const Backdrop = styled.div`
     top: 0;
     background-color: rgba(0, 0, 0, 0.15);
 `;
-
-const backdrop = (props) => (
-	props.show ? <Backdrop onClick={props.clicked}></Backdrop> : null
-);
-
-export default backdrop;

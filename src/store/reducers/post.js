@@ -4,6 +4,7 @@ import { updateObject } from '../utils';
 const initialState = {
 	loading: false,
 	error: null,
+	post: {},
 	posts: []
 };
 

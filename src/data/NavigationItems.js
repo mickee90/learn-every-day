@@ -1,7 +1,7 @@
 export default [
 	{
 		"id": 1,
-		"path": "/add/post",
+		"path": "/post/add",
 		"title": "Create post",
 		"require_login": false,
 		"show_when_login": true,

@@ -1,15 +1,7 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-// import VpnKey from '@material-ui/icons/VpnKey';
 import styled from 'styled-components';
-
-const ButtonStyle = styled(Button)`
-	&.LoginBtn {
-		float: right;
-		margin-top: 10px;
-	}
-`;
+import Button from '@material-ui/core/Button';
 
 export default props => {
 	let classes = [];
@@ -30,3 +22,10 @@ export default props => {
 		</ButtonStyle>
 	);
 };
+
+const ButtonStyle = styled(Button)`
+	&.LoginBtn {
+		float: right;
+		margin-top: 10px;
+	}
+`;

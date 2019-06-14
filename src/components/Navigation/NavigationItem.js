@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import Label from '../UI/Label';
 
 const NavigationItem = props => {

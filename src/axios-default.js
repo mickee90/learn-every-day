@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import * as actions from './store/actions/index';
 
 const instance = axios.create({
@@ -9,16 +10,17 @@ const instance = axios.create({
 	},
 });
 
+/**
+ * Testing!
+ * @todo Continue with proper auth logic
+ */
 instance.interceptors.request.use(function (config) {
-	// console.log('interceptor 1');
-	// console.log(config);
 	if(config.data !== undefined && !config.data.ignoreAuthCheck) {
 		if(!checkExpire()) {
 			throw new Error('Login again');
 		}
 	}
 	const token = localStorage.getItem('authToken');
-	// console.log(token);
 	config.headers.Authorization = token ? `Bearer ${token}`: 'Bearer 123';
 	return config;
 }, function (error) {

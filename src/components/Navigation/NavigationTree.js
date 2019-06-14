@@ -1,20 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import NavigationTreeData from '../../data/NavigationItems';
 import NavigationItem from './NavigationItem';
 
-const NavigationTree = styled.div`
-	height: 100vh;
-	wight: 100%;
-`;
+import styled from 'styled-components';
 
 export default props => {
-	// const [navigationState, setNavigationState] = useState({ NavigationTreeData });
-	//
-	// const switchNavigationHandler = () => {
-	// 	setNavigationState({ NavigationTreeData })
-	// };
-
 	return(
 		<NavigationTree>
 			{NavigationTreeData.map(item => (
@@ -27,3 +18,8 @@ export default props => {
 		</NavigationTree>
 	);
 };
+
+const NavigationTree = styled.div`
+	height: 100vh;
+	wight: 100%;
+`;

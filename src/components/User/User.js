@@ -5,18 +5,11 @@ import { withRouter } from 'react-router-dom';
 
 import Aux from '../../hoc/Aux';
 import Input from '../UI/Input';
-import CheckIcon from '@material-ui/icons/Check';
-import styled from 'styled-components';
-import Fab from '@material-ui/core/Fab';
+import Loader from '../UI/Loader';
 
-const SaveIconStyle = styled(Fab)`
-	&& {
-		position: absolute;
-		bottom: 10px;
-		right: 10px;
-		fontSize: 60px;
-	}
-`;
+import styled from 'styled-components';
+import CheckIcon from '@material-ui/icons/Check';
+import Fab from '@material-ui/core/Fab';
 
 class User extends Component {
 	constructor(props) {
@@ -114,7 +107,7 @@ class User extends Component {
 		let userContent = '';
 
 		if(this.props.user.loading) {
-			userContent = (<div style={{padding: '10px'}}>Loading...</div>);
+			userContent = (<Loader />);
 		} else if(this.state.missingUser) {
 			userContent = (<div style={{padding: '10px'}}>No user was found with this ID</div>);
 		} else {
@@ -187,3 +180,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(User));
+
+const SaveIconStyle = styled(Fab)`
+	&& {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		fontSize: 60px;
+	}
+`;

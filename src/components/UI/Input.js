@@ -1,12 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
 
-const StyledTextField = styled(TextField)`
-	&.disabled {
-		opacity: 0.5;
-	}
-`;
+import TextField from '@material-ui/core/TextField';
 
 export default props => {
 	let classes = ['fullWidth'];
@@ -15,7 +9,7 @@ export default props => {
 	}
 
 	return(
-		<StyledTextField
+		<TextField
 			type={props.type}
 			name={props.name}
 			label={props.placeholder}
@@ -23,7 +17,6 @@ export default props => {
 			onChange={props.changed}
 			className={classes.join(' ')}
 			margin="normal"
-			variant="filled"
 			required={!!props.required}
 			readOnly={!!props.readOnly}
 			disabled={!!props.disabled}

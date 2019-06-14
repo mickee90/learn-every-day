@@ -1,9 +1,22 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import styled from 'styled-components';
 import AppBar from '@material-ui/core/AppBar';
 import Menu from '@material-ui/icons/Menu';
-import styled from 'styled-components';
+
+export default props => {
+	const path = (props.isAuth) ? '/posts' : '/';
+
+	return(
+		<AppBarStyle color="inherit">
+			<div className="container">
+				<NavLink to={path}><Slogan>{ props.slogan }</Slogan></NavLink>
+				<MenuIcon onClick={props.toggleMenuClick} />
+			</div>
+		</AppBarStyle>
+	);
+};
 
 const Slogan = styled.div`
 	float: left;
@@ -31,16 +44,3 @@ const AppBarStyle = styled(AppBar)`
 		margin: 0 auto;
 	}
 `;
-
-export default props => {
-	const path = (props.isAuth) ? '/posts' : '/';
-
-	return(
-		<AppBarStyle color="inherit">
-			<div className="container">
-				<NavLink to={path}><Slogan>{ props.slogan }</Slogan></NavLink>
-				<MenuIcon onClick={props.toggleMenuClick} />
-			</div>
-		</AppBarStyle>
-	);
-};

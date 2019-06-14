@@ -1,10 +1,6 @@
 import React from 'react';
-// import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
 
-// const TextArea = styled(TextField)`
-// 	width: 100%;
-// `;
+import TextField from '@material-ui/core/TextField';
 
 export default props => {
 	let classes = ['fullWidth'];

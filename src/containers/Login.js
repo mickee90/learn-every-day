@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {NavLink, withRouter} from 'react-router-dom';
+
 import * as actions from '../store/actions/index';
-import styled from 'styled-components';
 
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
-import Highlight from '@material-ui/icons/Highlight';
+import Logo from '../components/UI/Logo';
+
+import styled from 'styled-components';
 
 class Login extends Component {
 	constructor(props) {
@@ -14,18 +16,29 @@ class Login extends Component {
 		this.state = {
 			username: '',
 			password: '',
-			errorMessage: ''
+			errorMessage: '',
+			submit_disabled: true
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
+		console.log('componentDidUpdate');
 		if(prevProps.error !== null && prevProps.error !== this.props.error) {
 			setTimeout(() => {
 				this.props.onResetError();
 			}, 3000);
 		}
+
+		if(prevState.username !== this.state.username || prevState.password !== this.state.password) {
+			if(this.state.username !== '' && this.state.password !== '') {
+				this.setState({submit_disabled: false});
+			} else {
+				this.setState({submit_disabled: true});
+			}
+		}
+		
 	}
 
 	handleSubmit(event) {
@@ -47,8 +60,7 @@ class Login extends Component {
 		return (
 			<div style={{padding: '30px 20px'}}>
 				<Slogan>
-					<SloganFirstSpan>LEARN <Highlight/> DAY</SloganFirstSpan>
-					<SloganSecondSpan>EVERY</SloganSecondSpan>
+					<Logo />
 				</Slogan>
 
 				{errorMessage}
@@ -68,9 +80,9 @@ class Login extends Component {
 						value={this.state.password}
 						required={true} />
 
-					<Button name="submit" type="submit" label="Login" classes="LoginBtn" />
+					<Button name="submit" type="submit" label="Login" classes="LoginBtn" disabled={this.state.submit_disabled} />
 				</form>
-				<NavLink to='/account/create' className="textLink" style={{marginTop:'10px', float: 'right'}}>Create Account</NavLink>
+				<NavLink to='/account/create' className="textLink" style={{marginTop:'10px', float: 'right', color: 'rgba(0,0,0,0.6)'}}>Create Account</NavLink>
 			</div>
 		);
 	};
@@ -90,19 +102,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 };
 
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+
 const Slogan = styled.div`
 	text-align: center;
 	margin-bottom: 30px;
 	font-size: 1.4em;
 `;
-
-const SloganFirstSpan = styled.div`
-	display: block;
-`;
-const SloganSecondSpan = styled.div`
-	display: block;
-	margin-left: 20px;
-	margin-top: 5px;
-`;
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

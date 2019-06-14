@@ -1,16 +1,8 @@
 import React from 'react';
 import Moment from 'react-moment';
+
 import styled from 'styled-components/macro';
 import Grid from '@material-ui/core/Grid';
-
-const ListDateBox = styled(Grid)`
-	height: 60px;
-`;
-const MomentStyle = styled(Moment)`
-	display: block;
-    width: 40px;
-    margin: 10px auto;
-`;
 
 export default props => {
 	const format = props.format || 'DD/MM YYYY';
@@ -25,3 +17,12 @@ export default props => {
 		</ListDateBox>
 	);
 };
+
+const ListDateBox = styled(Grid)`
+	height: 60px;
+`;
+const MomentStyle = styled(Moment)`
+	display: block;
+    width: 40px;
+    margin: 10px auto;
+`;

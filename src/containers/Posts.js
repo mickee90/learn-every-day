@@ -3,26 +3,16 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import * as actions from '../store/actions/index';
 
+import ListItem from '../components/List/ListItem';
+import Loader from '../components/UI/Loader';
+
+import styled from 'styled-components';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import styled from 'styled-components';
-import ListItem from '../components/List/ListItem';
 
-const PostsStyle = styled.div`
-	position: relative;
-	height: calc(100vh - 50px);
-	border-bottom: 1px solid #000;
-`;
-
-const AddIconStyle = styled(Fab)`
-	&& {
-		position: absolute;
-		bottom: 10px;
-		right: 10px;
-		fontSize: 60px;
-	}
-`;
-
+/**
+ * @todo Add pagination, search and filter
+ */
 class Posts extends Component {
 	componentDidMount() {
 		this.props.onFetchPosts();
@@ -30,18 +20,19 @@ class Posts extends Component {
 	}
 
 	render() {
-		let postContent = (<div>Loading</div>);
+		let postContent = (<Loader />);
 		if(!this.props.loading) {
+			console.log(this.props.posts);
 			postContent = this.props.posts.map(post => (
-				<ListItem key={post.id} link={'/post/' + post.id} exact={true} title={post.title} date={post.date} />
+				<ListItem key={post.uuid} link={'/post/' + post.uuid} exact={true} title={post.title} date={post.publish_date} />
 			))
 		}
 
 		return(
 			<PostsStyle>
 				{postContent}
-				<AddIconStyle color="secondary">
-					<NavLink to="/add/post">
+				<AddIconStyle color="primary">
+					<NavLink to="/post/add">
 						<AddIcon />
 					</NavLink>
 				</AddIconStyle>
@@ -65,3 +56,18 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+
+const PostsStyle = styled.div`
+	position: relative;
+	height: calc(100vh - 50px);
+	border-bottom: 1px solid #000;
+`;
+
+const AddIconStyle = styled(Fab)`
+	&& {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		line-height: inherit;
+	}
+`;

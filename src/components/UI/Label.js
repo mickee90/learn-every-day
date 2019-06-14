@@ -1,5 +1,12 @@
 import React from 'react';
+
 import styled from 'styled-components';
+
+export default props => {
+	return(
+		<Label>{props.children}</Label>
+	);
+};
 
 const Label = styled.div`
 	height: 40px;
@@ -7,9 +14,3 @@ const Label = styled.div`
     border-bottom: 1px solid #000;
     padding: 0 20px;
 `;
-
-export default props => {
-	return(
-		<Label>{props.children}</Label>
-	);
-};

@@ -1,83 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from '../../axios-default';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import Moment from 'react-moment';
 
 import Aux from '../../hoc/Aux';
-import Moment from 'react-moment';
+
+import styled from 'styled-components';
+import Fab from '@material-ui/core/Fab';
+import Edit from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace';
 
-
-const BackIconStyle = {
-	'position': 'absolute',
-	'bottom': '10px',
-	'left': '10px',
-	'fontSize': '60px'
-};
-
-const postView = (props) => {
-	const [post, setPost] = useState({ post: {}});
-	const [hasContent, setHasContent] = useState(false);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		let post = {};
-
-		axios.get('/posts/' + props.match.params.id)
-			.then(res => {
-				if(Object.keys(res.data.content).length !== 0) {
-					post = res.data.content[0];
-					setPost(post);
-					setHasContent(true);
-				}
-				setLoading(false);
-			})
-			.catch(err => {
-				console.log(err);
-				setLoading(false);
-			});
-	}, []);
-
-	let content = (
-		<Paper style={{padding: '10px', boxShadow: 'none'}}>
-			<Typography component="p">
-					Loading
-			</Typography>
-		</Paper>
-	);
-	if(!hasContent && !loading) {
-		content = (
-			<Paper style={{padding: '10px', boxShadow: 'none'}}>
-				<Typography component="p">
-					The post was not found
-				</Typography>
-			</Paper>
-		);
-	} else if(hasContent && !loading) {
-		content = (
+export default props => {
+	return (
+		<Aux>
 			<Paper style={{padding: '10px', boxShadow: 'none'}}>
 				<Typography variant="h5" component="h3">
-					{post.title}
+					{props.post.title}
 				</Typography>
 				<Typography component="h6" style={{marginTop: '5px'}}>
-					<Moment format="YYYY-MM-DD">{post.date}</Moment>
+					<Moment format="YYYY-MM-DD">{props.post.publish_date}</Moment>
 				</Typography>
 				<Typography component="p" style={{marginTop: '10px'}}>
-					{post.content}
+					{props.post.content}
 				</Typography>
 			</Paper>
-		);
-	}
-
-	return(
-		<Aux>
-			{content}
-			<Fab color="primary" onClick={props.history.goBack} style={BackIconStyle} >
+			<BackIcon color="primary" onClick={props.onBackClick}>
 				<KeyboardBackspace />
-			</Fab>
+			</BackIcon>
+			<EditIcon color="primary">
+				<NavLink to={`/post/edit/${props.post.uuid}`} style={{lineHeight: '0px'}}>
+					<Edit />
+				</NavLink>
+			</EditIcon>
 		</Aux>
 	);
 };
 
-export default postView;
+const BackIcon = styled(Fab) `
+	&& {
+		position: absolute;
+		bottom: 10px;
+		left: 10px;
+		fontSize: 60px;
+	}
+`;
+
+const EditIcon = styled(Fab)`
+	&& {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		fontSize: 60px;
+	}
+`;

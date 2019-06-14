@@ -7,7 +7,7 @@ const authStart = () => {
 };
 
 const authSuccess = (authData) => {
-	console.log('[auth.js] authSuccess', authData);
+	// console.log('[auth.js] authSuccess', authData);
 	return {
 		type: actionTypes.AUTH_SUCCESS,
 		...authData
@@ -23,7 +23,7 @@ export const authFail = (error) => {
 };
 
 export const authPopulateProps = () => {
-	console.log('[auth] authPopulateProps');
+	// console.log('[auth] authPopulateProps');
 	const localAuthInfo = {
 		auth_token: localStorage.getItem('authToken'),
 		uuid: localStorage.getItem('userUuid'),
@@ -33,7 +33,7 @@ export const authPopulateProps = () => {
 }
 
 export const authCheckStatus = () => {
-	console.log('[auth] authCheckStatus');
+	// console.log('[auth] authCheckStatus');
 
 	return dispatch => {
 		const token = localStorage.getItem('authToken');

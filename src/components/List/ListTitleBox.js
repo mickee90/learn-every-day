@@ -1,10 +1,8 @@
 import React from 'react';
-import styled from 'styled-components/macro';
-import Grid from '@material-ui/core/Grid';
 
-const ListTitleBox = styled(Grid)`
-	padding-top: 10px;
-`;
+import styled from 'styled-components/macro';
+
+import Grid from '@material-ui/core/Grid';
 
 export default props => {
 
@@ -14,3 +12,7 @@ export default props => {
 		</ListTitleBox>
 	);
 };
+
+const ListTitleBox = styled(Grid)`
+	padding-top: 10px;
+`;
