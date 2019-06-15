@@ -1,6 +1,6 @@
 export const buildDate = (date) => {
     let publishDateYear = date.getFullYear(),
-        publishDateMonth = date.getMonth(),
+        publishDateMonth = date.getMonth() +1,
         publishDateDay = date.getDate();
 
     if(publishDateMonth<10) publishDateMonth = '0' + publishDateMonth;

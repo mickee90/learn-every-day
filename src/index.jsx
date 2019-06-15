@@ -5,6 +5,10 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import './assets/css/index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -20,15 +24,25 @@ const rootReducer = combineReducers({
 	auth: authReducer
 });
 
-const store = createStore(rootReducer, composeEnhancers(
+const persistConfig = {
+	key: 'root',
+	storage
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = createStore(persistedReducer, composeEnhancers(
 	applyMiddleware(thunk)
 ));
+const persistor = persistStore(store);
 
 const app = (
 	<Provider store={store}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
+		<PersistGate loading={null} persistor={persistor}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</PersistGate>
 	</Provider>
 );
 

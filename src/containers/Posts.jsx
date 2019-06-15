@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import * as actions from '../store/actions/index';
+import errorHandler from '../hoc/errorHandler';
+import axios from '../axios-default';
 
 import ListItem from '../components/List/ListItem';
 import Loader from '../components/UI/Loader';
@@ -11,18 +13,18 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 /**
- * @todo Add pagination, search and filter
+ * @todo Add pagination, search and filter. Extend Redux with this info
+ * @todo Store current X posts in localStorage to prevent extra API fetches? 
  */
 class Posts extends Component {
+
 	componentDidMount() {
 		this.props.onFetchPosts();
-		console.log('[Posts] didMount');
 	}
 
 	render() {
 		let postContent = (<Loader />);
 		if(!this.props.loading) {
-			console.log(this.props.posts);
 			postContent = this.props.posts.map(post => (
 				<ListItem key={post.uuid} link={'/post/' + post.uuid} exact={true} title={post.title} date={post.publish_date} />
 			))
@@ -55,7 +57,7 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+export default connect(mapStateToProps, mapDispatchToProps)(errorHandler(Posts, axios));
 
 const PostsStyle = styled.div`
 	position: relative;

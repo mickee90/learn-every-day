@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {NavLink, withRouter} from 'react-router-dom';
 
+import errorHandler from '../hoc/errorHandler';
 import * as actions from '../store/actions/index';
+import axios from '../axios-default';
 
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
@@ -102,7 +104,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(errorHandler(Login, axios)));
 
 const Slogan = styled.div`
 	text-align: center;

@@ -7,7 +7,6 @@ export const createAuthUser = (user) => {
 };
 
 export const storeUser = (user) => {
-	localStorage.setItem('user', JSON.stringify(user));
 	return {type: actionTypes.STORE_USER, user: user };
 };
 
@@ -38,30 +37,6 @@ export const userPopulateProps = (uuid) => {
 		})
 	}
 }
-
-// export const getUser = (uuid) => {
-// 	// return dispatch => {
-// 		axios.get('/users/' + uuid)
-// 		.then(response => {
-// 			console.log(response);
-// 			if(response.data) {
-// 				console.log(response.data);
-// 				const user = {
-// 					uuid: response.data.content.uuid,
-// 					username: response.data.content.username,
-// 					first_name: response.data.content.first_name,
-// 					last_name: response.data.content.last_name,
-// 					email: response.data.content.email
-// 				}
-// 				console.log('[users] -> user', user);
-// 				return user;
-// 			}
-// 		})
-// 		.catch(error => {
-// 			console.log(error);
-// 		})
-// 	// }
-// }
 
 export const createUser = (userData, ownProps) => {
 	return dispatch => {

@@ -11,7 +11,6 @@ export {
 	logout,
 	authFail,
 	authCheckStatus,
-	authPopulateProps
 } from './auth';
 
 export {

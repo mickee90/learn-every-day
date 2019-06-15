@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import errorHandler from '../hoc/errorHandler';
 import axios from '../axios-default';
 
 import { buildDate } from '../Utils';
@@ -6,8 +7,6 @@ import { buildDate } from '../Utils';
 import PostEdit from '../components/Post/PostEdit';
 import PostView from '../components/Post/PostView';
 import Loader from '../components/UI/Loader';
-
-import styled from 'styled-components';
 
 /**
  * Component for displaying posts in View / Edit / Add mode. 
@@ -25,7 +24,6 @@ class Post extends Component {
 				publish_date: new Date(),
 				content: ''
 			},
-			missingPost: false,
 			editMode: props.match.path === '/post/edit/:uuid' ? true : false,
 			addMode: props.match.path === '/post/add' ? true : false,
 			viewMode: props.match.path === '/post/:uuid' ? true : false,
@@ -36,10 +34,8 @@ class Post extends Component {
 
 	/**
 	 * Get post data from backend if it's not a add post view
-	 * @todo Add error handling
 	 */
 	componentDidMount() {
-
 		if(!this.state.addMode) {
 			this.setState({ ...this.state, loading: true });
 
@@ -59,7 +55,9 @@ class Post extends Component {
 					});
 				})
 				.catch(err => {
-					this.setState({ ...this.state, loading: false, missingPost: true });
+					setTimeout(() => {
+						this.props.history.push('/posts');
+					}, 3000);
 				});
 		}
 	}
@@ -74,17 +72,14 @@ class Post extends Component {
 		}
 	}
 
-	// @todo extend logic with a more dynamic way to validate fields
 	handleTextChange  = (event, inputElm) => {
-		console.log('[Post] handleTextChange');
-
 		const updatedPost = { ...this.state.post };
-
 		updatedPost[inputElm] = event.target.value;
 
-		const formIsValid = !(updatedPost.title.trim() !== '' && updatedPost.content.trim() !== '');
+		const formIsInvalid = !(updatedPost.title.trim() !== '' 
+							&& updatedPost.content.trim() !== '');
 
-		this.setState({ ...this.state, post: updatedPost, saveDisabled: formIsValid });
+		this.setState({ ...this.state, post: updatedPost, saveDisabled: formIsInvalid });
 
 	};
 
@@ -132,8 +127,6 @@ class Post extends Component {
 
 		if(this.state.loading) {
 			postContent = (<Loader />);
-		} else if(this.state.missingPost) {
-			postContent = (<MissingPostBox>No post was found with this ID</MissingPostBox>);
 		} else if(this.state.viewMode) {
 			postContent = (<PostView post={this.state.post} onBackClick={this.handleClickBack} />);
 		} else {
@@ -151,14 +144,4 @@ class Post extends Component {
 	}
 }
 
-export default Post;
-
-const MissingPostBox = styled.div`
-	position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-    width: 200px;
-	text-align: center;
-`;
+export default errorHandler(Post, axios);

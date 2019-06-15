@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import * as actions from './store/actions/index';
 
 import Layout from './hoc/Layout';
-import User from './components/User/User';
+import User from './containers/User';
 import Login from './containers/Login';
 import Logout from './containers/Logout';
 import Post from './containers/Post';
@@ -52,7 +52,6 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onAuthSignIn: () => dispatch(actions.authCheckStatus()),
 		onLogout: () => dispatch(actions.logout()),
-		onPopulateAuth: () => dispatch(actions.authPopulateProps()),
 		onPopulateUser: (userUuid) => dispatch(actions.userPopulateProps(userUuid))
 	};
 };

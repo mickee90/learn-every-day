@@ -2,11 +2,13 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utils';
 
 const initialState = {
+	uuid: '',
 	username: '',
 	first_name: '',
 	last_name: '',
 	email: '',
-	loading: false
+	loading: false,
+	error: ''
 };
 
 const storeUser = (state, action) => {
