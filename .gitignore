@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+/.idea/workspace.xml
+
 # production
 /build
 
