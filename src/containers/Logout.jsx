@@ -1,19 +1,13 @@
-import { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import * as actions from '../store/actions/index';
 
-class Logout extends Component {
-	constructor(props) {
-		super(props);
-		this.props.onLogout();
-		this.props.history.push("/");
-	}
-
-	render() {
-		return null;
-	};
+const Logout = props => {
+	props.onLogout();
+	props.history.push("/");
+	
+	return null;
 }
 const mapDispatchToProps = dispatch => {
 	return {

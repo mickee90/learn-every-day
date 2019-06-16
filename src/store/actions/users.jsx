@@ -19,7 +19,7 @@ export const updateUserSuccess = (user) => {
 };
 
 export const userPopulateProps = (uuid) => {
-	console.log('[users] userPopulateProps');
+	
 	return dispatch => {
 		axios.get('/users/' + uuid)
 		.then(response => {
@@ -51,7 +51,6 @@ export const createUser = (userData, ownProps) => {
 			dispatch(actions.auth(response.data.content.username, user.password, ownProps));
 		})
 		.catch(error => {
-			console.log(error.response.data.content);
 			this.setState({loading: false});
 		});
 	}
@@ -75,7 +74,6 @@ export const updateUser = (userData) => {
 			const full_user = {
 				...user
 			};
-			console.log('[patch response] ', full_user);
 			dispatch(storeUser(full_user));
 			dispatch(updateUserSuccess());
 		})

@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { useState }  from 'react';
 import { connect } from 'react-redux';
 
 import Header from '../components/Navigation/Header';
@@ -8,49 +8,39 @@ import styled from 'styled-components';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
-class Layout extends Component {
-	state = {
-		showSideDrawer: false
+const Layout = props => {
+	const [showSideDrawer, setShowSideDrawer] = useState(false);
+
+	const onClickMenuHandler = () => {
+		setShowSideDrawer(!showSideDrawer);
 	};
 
-	onClickMenuHandler = () => {
-		this.setState((prevState) => {
-			return { showSideDrawer: !prevState.showSideDrawer };
-		})
+	const onClickNavHandler = () => {
+		setShowSideDrawer(!showSideDrawer);
 	};
 
-	onClickNavHandler = () => {
-		this.setState((prevState) => {
-			return { showSideDrawer: !prevState.showSideDrawer };
-		})
-	};
+	return (
+		<ThemeProvider theme={theme}>
+			<LayoutStyle>
+				<Header
+					slogan="Learn Every Day"
+					isAuth={props.isAuth}
+					toggleMenuClick={onClickMenuHandler} />
 
-	render() {
+				<Main>
+					{props.children}
+				</Main>
 
-		return (
-			<ThemeProvider theme={theme}>
-				<LayoutStyle>
-					<Header
-						slogan="Learn Every Day"
-						isAuth={this.props.isAuth}
-						toggleMenuClick={this.onClickMenuHandler} />
-
-					<Main>
-						{this.props.children}
-					</Main>
-
-					<SideDrawer
-						open={this.state.showSideDrawer}
-						closeMenuClick={this.onClickNavHandler}
-						toggleMenuClick={this.onClickMenuHandler}
-						isAuth={this.props.isAuth}
-					/>
-					{/*<footer />*/}
-				</LayoutStyle>
-			</ThemeProvider>
-		);
-	}
-	
+				<SideDrawer
+					open={showSideDrawer}
+					closeMenuClick={onClickNavHandler}
+					toggleMenuClick={onClickMenuHandler}
+					isAuth={props.isAuth}
+				/>
+				{/*<footer />*/}
+			</LayoutStyle>
+		</ThemeProvider>
+	);
 }
 
 const mapStateToProps = state => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {NavLink, withRouter} from 'react-router-dom';
 
@@ -12,51 +12,41 @@ import Logo from '../components/UI/Logo';
 
 import styled from 'styled-components';
 
-class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			username: '',
-			password: '',
-			errorMessage: '',
-			submit_disabled: true
-		};
+const Login = props => {
+	const [state, setState] = useState({
+		username: '',
+		password: '',
+		errorMessage: '',
+		submit_disabled: true
+	});
 
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
+	useEffect(() => {
+		setTimeout(() => {
+			props.onResetError();
+		}, 3000);
+	}, [props.error]);
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
-		console.log('componentDidUpdate');
-		if(prevProps.error !== null && prevProps.error !== this.props.error) {
-			setTimeout(() => {
-				this.props.onResetError();
-			}, 3000);
+	useEffect(() => {
+		if(state.username !== '' && state.password !== '') {
+			setState({...state, submit_disabled: false});
+		} else {
+			setState({...state, submit_disabled: true});
 		}
+	}, [state.username, state.password]);
 
-		if(prevState.username !== this.state.username || prevState.password !== this.state.password) {
-			if(this.state.username !== '' && this.state.password !== '') {
-				this.setState({submit_disabled: false});
-			} else {
-				this.setState({submit_disabled: true});
-			}
-		}
-		
-	}
-
-	handleSubmit(event) {
+	const handleSubmit = (event) => {
 		event.preventDefault();
-		this.props.onLogin(this.state.username, this.state.password);
+		props.onLogin(state.username, state.password);
 	}
 
-	handleTextChange(event, inputElm) {
+	const handleTextChange = (event, inputElm) => {
 		event.preventDefault();
-		this.setState({[inputElm]: event.target.value});
+		setState({...state, [inputElm]: event.target.value});
 	}
 
-	render() {
 		let errorMessage = '';
-		if(this.props.error) {
-			errorMessage = (<div style={{backgroundColor: 'red', padding: '10px', borderRadius: '10px', color: '#fff'}}>{this.props.error}</div>);
+		if(props.error) {
+			errorMessage = (<div style={{backgroundColor: 'red', padding: '10px', borderRadius: '10px', color: '#fff'}}>{props.error}</div>);
 		}
 
 		return (
@@ -66,28 +56,27 @@ class Login extends Component {
 				</Slogan>
 
 				{errorMessage}
-				<form onSubmit={this.handleSubmit} autoComplete="off" className="clearFix">
+				<form onSubmit={handleSubmit} autoComplete="off" className="clearFix">
 					<Input
-						changed={(event) => this.handleTextChange(event, 'username')}
+						changed={(event) => handleTextChange(event, 'username')}
 						type="email"
 						name="username"
 						placeholder="Username"
-						value={this.state.username}
+						value={state.username}
 						required={true} />
 					<Input
-						changed={(event) => this.handleTextChange(event, 'password')}
+						changed={(event) => handleTextChange(event, 'password')}
 						type="password"
 						name="password"
 						placeholder="Password"
-						value={this.state.password}
+						value={state.password}
 						required={true} />
 
-					<Button name="submit" type="submit" label="Login" classes="LoginBtn" disabled={this.state.submit_disabled} />
+					<Button name="submit" type="submit" label="Login" classes="LoginBtn" disabled={state.submit_disabled} />
 				</form>
 				<NavLink to='/account/create' className="textLink" style={{marginTop:'10px', float: 'right', color: 'rgba(0,0,0,0.6)'}}>Create Account</NavLink>
 			</div>
 		);
-	};
 }
 
 const mapStateToProps = state => {

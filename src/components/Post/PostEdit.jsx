@@ -9,7 +9,6 @@ import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 
 export default props => {
-	console.log(props.post.title, props.post.publish_date, props);
 
 	return (
 		<div style={{padding: '10px'}}>

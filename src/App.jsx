@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
@@ -13,39 +13,37 @@ import Posts from './containers/Posts';
 
 import './assets/css/app.css';
 
-class App extends Component {
+const App = props => {
 
-	componentDidMount() {
-		this.props.onAuthSignIn();
-	}
+	useEffect(() => {
+		props.onAuthSignIn();
+	}, []);
 
-	render() {
-		let routes = (
+	let routes = (
+		<Switch>
+			<Route path="/account/create" component={User} />
+			<Route path="/account/logout" component={Logout} />
+			<Route path="/" component={Login} />
+		</Switch>
+	);
+	if(props.isAuth) {
+		routes = (
 			<Switch>
-				<Route path="/account/create" component={User} />
+				<Route path="/post/add" exact component={Post} />
+				<Route path="/post/edit/:uuid" component={Post} />
+				<Route path="/post/:uuid" component={Post} />
+				<Route path="/posts" component={Posts} />
+				<Route path="/account/update/:uuid" component={User} />
 				<Route path="/account/logout" component={Logout} />
-				<Route path="/" component={Login} />
 			</Switch>
 		);
-		if(this.props.isAuth) {
-			routes = (
-				<Switch>
-					<Route path="/post/add" exact component={Post} />
-					<Route path="/post/edit/:uuid" component={Post} />
-					<Route path="/post/:uuid" component={Post} />
-					<Route path="/posts" component={Posts} />
-					<Route path="/account/update/:uuid" component={User} />
-					<Route path="/account/logout" component={Logout} />
-				</Switch>
-			);
-		};
+	};
 
-		return (
-    	<Layout>
+	return (
+		<Layout>
 			{routes}
 		</Layout>
-    );
-  }
+	);
 }
 
 const mapDispatchToProps = dispatch => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import * as actions from '../store/actions/index';
@@ -16,31 +16,29 @@ import AddIcon from '@material-ui/icons/Add';
  * @todo Add pagination, search and filter. Extend Redux with this info
  * @todo Store current X posts in localStorage to prevent extra API fetches? 
  */
-class Posts extends Component {
+const Posts = props => {
 
-	componentDidMount() {
-		this.props.onFetchPosts();
+	useEffect(() => {
+		props.onFetchPosts();
+	}, []);
+
+	let postContent = (<Loader />);
+	if(!props.loading) {
+		postContent = props.posts.map(post => (
+			<ListItem key={post.uuid} link={'/post/' + post.uuid} exact={true} title={post.title} date={post.publish_date} />
+		))
 	}
 
-	render() {
-		let postContent = (<Loader />);
-		if(!this.props.loading) {
-			postContent = this.props.posts.map(post => (
-				<ListItem key={post.uuid} link={'/post/' + post.uuid} exact={true} title={post.title} date={post.publish_date} />
-			))
-		}
-
-		return(
-			<PostsStyle>
-				{postContent}
-				<AddIconStyle color="primary">
-					<NavLink to="/post/add">
-						<AddIcon />
-					</NavLink>
-				</AddIconStyle>
-			</PostsStyle>
-		);
-	}
+	return(
+		<PostsStyle>
+			{postContent}
+			<AddIconStyle color="primary">
+				<NavLink to="/post/add">
+					<AddIcon />
+				</NavLink>
+			</AddIconStyle>
+		</PostsStyle>
+	);
 }
 
 const mapStateToProps = state => {
