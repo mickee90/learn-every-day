@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
-// import * as actions from './store/actions/index';
+// import * as actions from './reduxStore/actions/index';
 
 const instance = axios.create({
-	baseURL: 'http://127.0.0.1:8080/api/v1/',
-	headers: {
-		'Accept': 'application/json',
-		'Content-Type': 'application/json',
-	},
+  baseURL: "http://127.0.0.1:8080/api/v1/",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  }
 });
 
 /**
