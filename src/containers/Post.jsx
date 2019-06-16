@@ -2,47 +2,48 @@ import React, { useState, useEffect, useReducer } from "react";
 import errorHandler from "../hoc/errorHandler";
 import axios from "../axios-default";
 
-// import { postReducer } from "../hookReducers/reducers/post";
+import { postReducer } from "../hookReducers/reducers/post";
 import { buildDate } from "../Utils";
 
 import PostEdit from "../components/Post/PostEdit";
 import PostView from "../components/Post/PostView";
 import Loader from "../components/UI/Loader";
 
-// const initialState = {
-// 	post: {
-//     uuid: null,
-//     user_id: null,
-//     title: "",
-//     publish_date: new Date(),
-//     content: ""
-// 	},
-
-// }
+const initialState = {
+  post: {
+    uuid: null,
+    user_id: null,
+    title: "",
+    publish_date: new Date(),
+    content: ""
+  },
+  saveDisabled: true,
+  loading: false
+};
 
 /**
- * Component for displaying posts in View / Edit / Add mode.
- * @todo Split up in seperate components?
+ * Component for displaying posts in View / Edit / Create mode.
+ * @todo Move editMode/createMode/viewMode to useReducer as well?
  */
 const Post = props => {
-  // const [state, dispatch] = useReducer(postReducer, initialState);
-  const [post, setPost] = useState();
+  const [state, dispatch] = useReducer(postReducer, initialState);
+  const { post, saveDisabled, loading } = state;
   const [editMode, setEditMode] = useState(
     props.match.path === "/post/edit/:uuid" ? true : false
   );
-  const [addMode] = useState(props.match.path === "/post/add" ? true : false);
+  const [createMode] = useState(
+    props.match.path === "/post/add" ? true : false
+  );
   const [viewMode, setViewMode] = useState(
     props.match.path === "/post/:uuid" ? true : false
   );
-  const [, setSaveDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   /**
    * Get post data from backend if it's not a add post view
    */
   useEffect(() => {
-    if (!addMode) {
-      setLoading(true);
+    if (!createMode) {
+      dispatch({ type: "IS_LOADING" });
 
       axios
         .get("/posts/" + props.match.params.uuid)
@@ -53,11 +54,14 @@ const Post = props => {
             new_post = res.data.content[0];
           }
 
-          setPost(new_post);
-          setLoading(false);
-          setSaveDisabled(
-            !(new_post.title.trim() !== "" && new_post.content.trim() !== "")
-          );
+          dispatch({ type: "SET_POST", payload: new_post });
+          dispatch({ type: "NOT_LOADING" });
+          dispatch({
+            type: "SET_SAVE_DISABLED",
+            payload: !(
+              new_post.title.trim() !== "" && new_post.content.trim() !== ""
+            )
+          });
         })
         .catch(err => {
           setTimeout(() => {
@@ -80,14 +84,20 @@ const Post = props => {
       updatedPost.title.trim() !== "" && updatedPost.content.trim() !== ""
     );
 
-    setPost(updatedPost);
-    setSaveDisabled(formIsInvalid);
+    dispatch({ type: "SET_POST", payload: updatedPost });
+    dispatch({
+      type: "SET_SAVE_DISABLED",
+      payload: formIsInvalid
+    });
   };
 
   const handleDateChange = newDate => {
-    setPost({
-      ...post,
-      publish_date: newDate
+    dispatch({
+      type: "SET_POST",
+      payload: {
+        ...post,
+        publish_date: newDate
+      }
     });
   };
 
@@ -97,7 +107,7 @@ const Post = props => {
 
   const submitPostHandler = event => {
     event.preventDefault();
-    setLoading(true);
+    dispatch({ type: "IS_LOADING" });
 
     const publishDateState =
       post.publish_date instanceof Date
@@ -111,20 +121,20 @@ const Post = props => {
       axios
         .patch(`/posts/${new_post.uuid}`, new_post)
         .then(response => {
-          setLoading(false);
+          dispatch({ type: "NOT_LOADING" });
         })
         .catch(error => {
-          setLoading(false);
+          dispatch({ type: "NOT_LOADING" });
         });
     } else {
       axios
         .post("/posts", new_post)
         .then(response => {
-          setLoading(false);
+          dispatch({ type: "NOT_LOADING" });
           props.history.push("/posts");
         })
         .catch(error => {
-          setLoading(false);
+          dispatch({ type: "NOT_LOADING" });
         });
     }
   };
@@ -142,6 +152,7 @@ const Post = props => {
         onSubmit={submitPostHandler}
         onDateChange={handleDateChange}
         post={post}
+        saveDisabled={saveDisabled}
       />
     );
   }
