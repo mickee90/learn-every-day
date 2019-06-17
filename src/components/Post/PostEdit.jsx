@@ -23,7 +23,6 @@ export default props => {
         changed={props.onDateChange}
         name="date"
         placeholder="Date"
-        format={v => (v === "" || v === undefined ? new Date() : new Date(v))}
         value={new Date(props.post.publish_date)}
       />
       <Textarea

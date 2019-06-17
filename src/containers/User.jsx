@@ -1,31 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useReducer } from "react";
 import * as actions from "../reduxStore/actions/index";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import { userReducer } from "../hookReducers/reducers/user";
+import * as reducerActions from "../hookReducers/actions/user";
 import Aux from "../hoc/Aux";
 import UserCreate from "../components/User/UserCreate";
 import UserEdit from "../components/User/UserEdit";
 import Loader from "../components/UI/Loader";
 
 const User = props => {
-  const [user, setUser] = useState({
-    uuid: props.user.uuid || "",
-    password: "",
-    password_2: "",
-    first_name: props.user.first_name || "",
-    last_name: props.user.last_name || "",
-    username: props.user.username || "",
-    email: props.user.email || ""
-  });
-  const [missingUser] = useState(false);
-  const [editMode] = useState(props.match.path === "/account/update/:uuid");
-  const [createMode] = useState(props.match.path === "/account/create");
-  const [saveDisabled, setSaveDisabled] = useState(true);
+  const initialState = {
+    user: {
+      uuid: props.user.uuid || "",
+      password: "",
+      password_2: "",
+      first_name: props.user.first_name || "",
+      last_name: props.user.last_name || "",
+      username: props.user.username || "",
+      email: props.user.email || ""
+    },
+    missingUser: false,
+    editMode: props.match.path === "/account/update/:uuid",
+    createMode: props.match.path === "/account/create",
+    saveDisabled: true
+  };
+  const [reducerState, dispatch] = useReducer(userReducer, initialState);
+  const {
+    user,
+    missingUser,
+    editMode,
+    createMode,
+    saveDisabled
+  } = reducerState;
 
   useEffect(() => {
     if (editMode) {
-      setSaveDisabled(validateEditForm(user));
+      dispatch(reducerActions.setSaveDisabled(validateEditForm(user)));
     }
   }, []);
 
@@ -44,8 +56,8 @@ const User = props => {
       formIsInvalid = validateEditForm(updatedUser);
     }
 
-    setUser(updatedUser);
-    setSaveDisabled(formIsInvalid);
+    dispatch(reducerActions.setUser(updatedUser));
+    dispatch(reducerActions.setSaveDisabled(formIsInvalid));
   };
 
   /**

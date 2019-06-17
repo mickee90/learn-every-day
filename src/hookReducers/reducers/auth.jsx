@@ -1,6 +1,6 @@
 import { updateObject } from "../../Utils";
 
-import * as actions from "../actions/auth";
+import * as actions from "../actions/actionTypes";
 
 const initialState = {
   username: "",

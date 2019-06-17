@@ -16,6 +16,10 @@ const storePosts = (state, action) => {
   return updateObject(state, { posts: action.posts });
 };
 
+const clearPosts = (state, action) => {
+  return updateObject(state, { posts: [] });
+};
+
 const startPostLoader = (state, action) => {
   return updateObject(state, { loading: true });
 };
@@ -30,6 +34,8 @@ const reducer = (state = initialState, action) => {
       return getPost(state, action);
     case actionTypes.STORE_POSTS:
       return storePosts(state, action);
+    case actionTypes.CLEAR_POSTS:
+      return clearPosts(state, action);
     case actionTypes.START_POST_LOADER:
       return startPostLoader(state, action);
     case actionTypes.STOP_POST_LOADER:

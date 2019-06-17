@@ -21,8 +21,10 @@ const Posts = props => {
     props.onFetchPosts();
   }, []);
 
-  let postContent = <Loader />;
-  if (!props.loading) {
+  let postContent = "";
+  if (props.loading) {
+    postContent = <Loader />;
+  } else if (props.posts.length > 0) {
     postContent = props.posts.map(post => (
       <ListItem
         key={post.uuid}

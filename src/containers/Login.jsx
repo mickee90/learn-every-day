@@ -4,6 +4,7 @@ import { NavLink, withRouter } from "react-router-dom";
 
 // import GlobalContext from "../context/global-context";
 import { authReducer } from "../hookReducers/reducers/auth";
+import * as reducerActions from "../hookReducers/actions/auth";
 import errorHandler from "../hoc/errorHandler";
 import * as actions from "../reduxStore/actions/index";
 import axios from "../axios-default";
@@ -14,17 +15,16 @@ import Logo from "../components/UI/Logo";
 
 import styled from "styled-components";
 
-const initialState = {
-  username: "",
-  password: "",
-  errorMessage: "",
-  submitDisabled: true
-};
-
 /**
  * @todo Continue replacing Redux with Context?
  */
 const Login = props => {
+  const initialState = {
+    username: "",
+    password: "",
+    errorMessage: "",
+    submitDisabled: true
+  };
   const [state, dispatch] = useReducer(authReducer, initialState);
   const { username, password, errorMessage, submitDisabled } = state;
 
@@ -36,9 +36,9 @@ const Login = props => {
 
   useEffect(() => {
     if (username !== "" && password !== "") {
-      dispatch({ type: "DISABLE_SUBMIT", payload: false });
+      dispatch(reducerActions.disableSubmit(false));
     } else {
-      dispatch({ type: "DISABLE_SUBMIT", payload: true });
+      dispatch(reducerActions.disableSubmit(true));
     }
   }, [username, password]);
 
@@ -49,10 +49,12 @@ const Login = props => {
 
   const handleTextChange = (event, inputElm) => {
     event.preventDefault();
-    dispatch({
-      type: "FIELD",
-      payload: { fieldName: inputElm, value: event.target.value }
-    });
+    dispatch(
+      reducerActions.setField({
+        fieldName: inputElm,
+        value: event.target.value
+      })
+    );
   };
 
   return (
