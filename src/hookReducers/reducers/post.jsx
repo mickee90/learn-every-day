@@ -1,4 +1,4 @@
-import { updateObject } from "../../Utils";
+import { updateObject } from "../../utils/helpers";
 
 import * as actions from "../actions/actionTypes";
 

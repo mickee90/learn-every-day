@@ -4,7 +4,7 @@ import axios from "../axios-default";
 
 import { postReducer } from "../hookReducers/reducers/post";
 import * as reducerActions from "../hookReducers/actions/post";
-import { buildDate } from "../Utils";
+import { buildDate } from "../utils/helpers";
 
 import PostEdit from "../components/Post/PostEdit";
 import PostView from "../components/Post/PostView";
