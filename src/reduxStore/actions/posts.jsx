@@ -1,12 +1,12 @@
-import * as actionTypes from "./actionTypes";
-import axios from "../../axios-default";
+import * as actionTypes from './actionTypes';
+import axios from '../../axios-default';
 
-export const getPosts = () => {
+export const getPosts = (page = 1, nrOfPosts = 20) => {
   return dispatch => {
     dispatch({ type: actionTypes.START_POST_LOADER });
 
     axios
-      .get("/posts")
+      .get('/posts', { params: { page, nr_of_posts: nrOfPosts } })
       .then(res => {
         dispatch({ type: actionTypes.STORE_POSTS, posts: res.data.content });
         dispatch({ type: actionTypes.STOP_POST_LOADER });
@@ -59,8 +59,8 @@ export const setPostError = (error = {}) => {
   return {
     type: actionTypes.SET_POST_ERROR,
     error: {
-      error_code: error.status_code !== null ? error.status_code : "",
-      error_msg: error.status_code !== null ? error.content : ""
+      error_code: error.status_code !== null ? error.status_code : '',
+      error_msg: error.status_code !== null ? error.content : ''
     }
   };
 

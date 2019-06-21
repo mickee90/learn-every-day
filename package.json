@@ -39,6 +39,6 @@
     "not op_mini all"
   ],
   "prettier": {
-    "singleQuote": tru
+    "singleQuote": true
   }
 }

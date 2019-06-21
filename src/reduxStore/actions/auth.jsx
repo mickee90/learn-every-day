@@ -1,6 +1,6 @@
-import * as actionTypes from "./actionTypes";
-import * as actions from "./index";
-import axios from "../../axios-default";
+import * as actionTypes from './actionTypes';
+import * as actions from './index';
+import axios from '../../axios-default';
 
 const authStart = () => {
   return { type: actionTypes.AUTH_START };
@@ -13,8 +13,8 @@ const authSuccess = authData => {
 export const authFail = (error = {}) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error_code: error.status_code !== null ? error.status_code : "",
-    error_msg: error.status_code !== null ? error.content : ""
+    error_code: error.status_code !== null ? error.status_code : '',
+    error_msg: error.status_code !== null ? error.content : ''
   };
 };
 
@@ -56,12 +56,12 @@ export const auth = (username, password, ownProps) => {
     };
 
     axios
-      .post("/auth", userData)
+      .post('/auth', userData)
       .then(response => {
         if (response.data) {
           dispatch(actions.storeUser(response.data.content));
           dispatch(authSuccess(response.data.content));
-          ownProps.history.push("/posts");
+          ownProps.history.push('/posts');
         }
       })
       .catch(error => {

@@ -3,8 +3,8 @@ export const buildDate = date => {
     publishDateMonth = date.getMonth() + 1,
     publishDateDay = date.getDate();
 
-  if (publishDateMonth < 10) publishDateMonth = "0" + publishDateMonth;
-  if (publishDateDay < 10) publishDateDay = "0" + publishDateDay;
+  if (publishDateMonth < 10) publishDateMonth = '0' + publishDateMonth;
+  if (publishDateDay < 10) publishDateDay = '0' + publishDateDay;
 
   return `${publishDateYear}-${publishDateMonth}-${publishDateDay}`;
 };
@@ -14,4 +14,8 @@ export const updateObject = (oldObject, updatedProperties) => {
     ...oldObject,
     ...updatedProperties
   };
+};
+
+export const validateFields = (obj, fields) => {
+  return fields.every(field => obj[field].trim() !== '');
 };

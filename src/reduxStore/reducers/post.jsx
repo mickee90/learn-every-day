@@ -1,11 +1,15 @@
-import * as actionTypes from "../actions/actionTypes";
-import { updateObject } from "../../utils/helpers";
+import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../../utils/helpers';
 
 const initialState = {
   loading: false,
   error: null,
   post: {},
-  posts: []
+  posts: [],
+  pagination: {
+    page: 1,
+    nrOfPosts: 20
+  }
 };
 
 const getPost = (state, action) => {
@@ -28,6 +32,14 @@ const stopPostLoader = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
+const setPagination = (state, action) => {
+  return updateObject(state, {
+    pagination: {
+      ...action.payload
+    }
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_POST:
@@ -40,6 +52,8 @@ const reducer = (state = initialState, action) => {
       return startPostLoader(state, action);
     case actionTypes.STOP_POST_LOADER:
       return stopPostLoader(state, action);
+    case actionTypes.SET_PAGINATION:
+      return setPagination(state, action);
     // case actionTypes.CREATE_POST: return createPost(state, action);
     // case actionTypes.UPDATE_POST: return updatePost(state, action);
     default:

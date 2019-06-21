@@ -1,14 +1,14 @@
-import { updateObject } from "../../utils/helpers";
+import { updateObject } from '../../utils/helpers';
 
-import * as actions from "../actions/actionTypes";
+import * as actions from '../actions/actionTypes';
 
 const initialState = {
   post: {
     uuid: null,
     user_id: null,
-    title: "",
+    title: '',
     publish_date: new Date(),
-    content: ""
+    content: ''
   },
   saveDisabled: true,
   loading: false,

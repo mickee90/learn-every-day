@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
-import * as actions from "../reduxStore/actions/index";
-import errorHandler from "../hoc/errorHandler";
-import axios from "../axios-default";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import * as actions from '../reduxStore/actions/index';
+import errorHandler from '../hoc/errorHandler';
+import axios from '../axios-default';
 
-import ListItem from "../components/List/ListItem";
-import Loader from "../components/UI/Loader";
+import ListItem from '../components/List/ListItem';
+import Loader from '../components/UI/Loader';
 
-import styled from "styled-components";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import styled from 'styled-components';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 /**
  * @todo Add pagination, search and filter. Extend Redux with this info
@@ -18,17 +18,17 @@ import AddIcon from "@material-ui/icons/Add";
  */
 const Posts = props => {
   useEffect(() => {
-    props.onFetchPosts();
+    props.onFetchPosts(props.page, props.nrOfPosts);
   }, []);
 
-  let postContent = "";
+  let postContent = '';
   if (props.loading) {
     postContent = <Loader />;
   } else if (props.posts.length > 0) {
     postContent = props.posts.map(post => (
       <ListItem
         key={post.uuid}
-        link={"/post/" + post.uuid}
+        link={'/post/' + post.uuid}
         exact={true}
         title={post.title}
         date={post.publish_date}
@@ -51,6 +51,8 @@ const Posts = props => {
 const mapStateToProps = state => {
   return {
     posts: state.post.posts,
+    page: state.post.pagination.page,
+    nrOfPosts: state.post.pagination.nrOfPosts,
     loading: state.post.loading,
     error: state.post.error
   };
@@ -58,7 +60,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchPosts: () => dispatch(actions.getPosts())
+    onFetchPosts: (page, nrOfPosts) =>
+      dispatch(actions.getPosts(page, nrOfPosts))
   };
 };
 

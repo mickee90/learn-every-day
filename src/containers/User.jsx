@@ -1,29 +1,31 @@
-import React, { useEffect, useReducer } from "react";
-import * as actions from "../reduxStore/actions/index";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React, { useEffect, useReducer } from 'react';
+import * as actions from '../reduxStore/actions/index';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-import { userReducer } from "../hookReducers/reducers/user";
-import * as reducerActions from "../hookReducers/actions/user";
-import Aux from "../hoc/Aux";
-import UserCreate from "../components/User/UserCreate";
-import UserEdit from "../components/User/UserEdit";
-import Loader from "../components/UI/Loader";
+import { userReducer } from '../hookReducers/reducers/user';
+import * as reducerActions from '../hookReducers/actions/user';
+import { validateFields } from '../utils/helpers';
+
+import Aux from '../hoc/Aux';
+import UserCreate from '../components/User/UserCreate';
+import UserEdit from '../components/User/UserEdit';
+import Loader from '../components/UI/Loader';
 
 const User = props => {
   const initialState = {
     user: {
-      uuid: props.user.uuid || "",
-      password: "",
-      password_2: "",
-      first_name: props.user.first_name || "",
-      last_name: props.user.last_name || "",
-      username: props.user.username || "",
-      email: props.user.email || ""
+      uuid: props.user.uuid || '',
+      password: '',
+      password_2: '',
+      first_name: props.user.first_name || '',
+      last_name: props.user.last_name || '',
+      username: props.user.username || '',
+      email: props.user.email || ''
     },
     missingUser: false,
-    editMode: props.match.path === "/account/update/:uuid",
-    createMode: props.match.path === "/account/create",
+    editMode: props.match.path === '/account/update/:uuid',
+    createMode: props.match.path === '/account/create',
     saveDisabled: true
   };
   const [reducerState, dispatch] = useReducer(userReducer, initialState);
@@ -60,27 +62,26 @@ const User = props => {
     dispatch(reducerActions.setSaveDisabled(formIsInvalid));
   };
 
-  /**
-   * @todo Move to Utils with more generic checking
-   */
   const validateCreateForm = inputs => {
+    const valid_fields = validateFields(inputs, [
+      'username',
+      'first_name',
+      'last_name',
+      'email',
+      'password'
+    ]);
     return !(
-      inputs.username.trim() !== "" &&
-      inputs.first_name.trim() !== "" &&
-      inputs.last_name.trim() !== "" &&
-      inputs.email.trim() !== "" &&
-      inputs.password.trim() !== "" &&
-      inputs.password.trim() === inputs.password_2.trim()
+      valid_fields && inputs.password.trim() === inputs.password_2.trim()
     );
   };
 
   const validateEditForm = inputs => {
-    return !(
-      inputs.username.trim() !== "" &&
-      inputs.first_name.trim() !== "" &&
-      inputs.last_name.trim() !== "" &&
-      inputs.email.trim() !== ""
-    );
+    return !validateFields(inputs, [
+      'username',
+      'first_name',
+      'last_name',
+      'email'
+    ]);
   };
 
   const submitEditHandler = event => {
@@ -93,13 +94,13 @@ const User = props => {
     props.onCreateUser(user);
   };
 
-  let userContent = "";
+  let userContent = '';
 
   if (props.user.loading) {
     userContent = <Loader />;
   } else if (missingUser) {
     userContent = (
-      <div style={{ padding: "10px" }}>No user was found with this ID</div>
+      <div style={{ padding: '10px' }}>No user was found with this ID</div>
     );
   } else if (editMode === true) {
     userContent = (
@@ -126,7 +127,7 @@ const User = props => {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    uuid: state.auth.uuid || "",
+    uuid: state.auth.uuid || '',
     isLoggedIn: state.auth.token !== null
   };
 };
