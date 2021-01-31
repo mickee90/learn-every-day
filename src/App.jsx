@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Switch, Route } from 'react-router-dom';
 
-import * as actions from "./reduxStore/actions/index";
+import * as actions from './reduxStore/actions/index';
 
-import Layout from "./hoc/Layout";
-import User from "./containers/User";
-import Login from "./containers/Login";
-import Logout from "./containers/Logout";
-import Post from "./containers/Post";
-import Posts from "./containers/Posts";
-
-import "./assets/css/app.css";
+import Layout from './hoc/Layout';
+import User from './containers/User';
+import Login from './containers/Login';
+import Logout from './containers/Logout';
+import Post from './containers/Post';
+import Posts from './containers/Posts';
 
 const App = props => {
   useEffect(() => {

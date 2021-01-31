@@ -7,6 +7,7 @@ import axios from '../axios-default';
 
 import ListItem from '../components/List/ListItem';
 import Loader from '../components/UI/Loader';
+import Pagination from '../components/UI/Pagination';
 
 import styled from 'styled-components';
 import Fab from '@material-ui/core/Fab';
@@ -18,8 +19,13 @@ import AddIcon from '@material-ui/icons/Add';
  */
 const Posts = props => {
   useEffect(() => {
-    props.onFetchPosts(props.page, props.nrOfPosts);
+    props.onFetchPosts(props.pagination.page, props.pagination.postsPerPage);
   }, []);
+
+  const fetchPosts = (page, postsPerPage) => {
+    console.log(page, postsPerPage);
+    props.onFetchPosts(page, postsPerPage);
+  };
 
   let postContent = '';
   if (props.loading) {
@@ -38,6 +44,7 @@ const Posts = props => {
 
   return (
     <PostsStyle>
+      <Pagination {...props.pagination} fetchPosts={fetchPosts} />
       {postContent}
       <AddIconStyle color="primary">
         <NavLink to="/post/add">
@@ -50,9 +57,8 @@ const Posts = props => {
 
 const mapStateToProps = state => {
   return {
-    posts: state.post.posts,
-    page: state.post.pagination.page,
-    nrOfPosts: state.post.pagination.nrOfPosts,
+    posts: state.post.posts || [],
+    pagination: state.post.pagination,
     loading: state.post.loading,
     error: state.post.error
   };
@@ -60,8 +66,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchPosts: (page, nrOfPosts) =>
-      dispatch(actions.getPosts(page, nrOfPosts))
+    onFetchPosts: (page, postsPerPage) =>
+      dispatch(actions.getPosts(page, postsPerPage))
   };
 };
 

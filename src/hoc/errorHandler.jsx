@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-import * as actions from "../reduxStore/actions/index";
+import * as actions from '../reduxStore/actions/index';
 
-import Alert from "../components/UI/Alert";
-import Aux from "./Aux";
+import Alert from '../components/UI/Alert';
+import Aux from './Aux';
 
 const errorHandler = (WrappedComponent, axios) => {
   const ErrorHandler = props => {
@@ -16,11 +16,11 @@ const errorHandler = (WrappedComponent, axios) => {
           checkExpire();
         }
         const token = props.auth.token;
-        req.headers.Authorization = token ? `Bearer ${token}` : "";
+        req.headers.Authorization = token ? `Bearer ${token}` : '';
         return req;
       },
       err => {
-        setError({ message: "Something went wrong. Please try again." });
+        setError({ message: 'Something went wrong. Please try again.' });
         setTimeout(() => {
           setError(null);
         }, 3000);
@@ -52,12 +52,12 @@ const errorHandler = (WrappedComponent, axios) => {
       const authExpire = props.auth.expireTime;
       if (authExpire <= new Date()) {
         setError({
-          message: "The login token has expired. You are gonna be logged out."
+          message: 'The login token has expired. You are gonna be logged out.'
         });
 
         setTimeout(() => {
           actions.logout();
-          props.history.push("/");
+          props.history.push('/');
         }, 1000);
       }
     };
@@ -76,10 +76,10 @@ const errorHandler = (WrappedComponent, axios) => {
     return (
       <Aux>
         <Alert
-          classes={error ? "error" : ""}
+          classes={error ? 'error' : ''}
           alertClose={errorConfirmedHandler}
         >
-          {error ? error.message : ""}
+          {error ? error.message : ''}
         </Alert>
         <WrappedComponent {...props} />
       </Aux>

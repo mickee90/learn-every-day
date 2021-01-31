@@ -44,7 +44,7 @@ const Post = props => {
           let new_post = post;
 
           if (Object.keys(res.data.content).length !== 0) {
-            new_post = res.data.content[0];
+            new_post = res.data.content.posts[0];
           }
 
           dispatch(reducerActions.setPost(new_post));

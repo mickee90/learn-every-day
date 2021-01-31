@@ -1,14 +1,29 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-default';
 
-export const getPosts = (page = 1, nrOfPosts = 20) => {
+export const getPosts = (page = 1, postsPerPage = 20) => {
   return dispatch => {
     dispatch({ type: actionTypes.START_POST_LOADER });
 
     axios
-      .get('/posts', { params: { page, nr_of_posts: nrOfPosts } })
+      .get('/posts', {
+        params: {
+          page: parseInt(page),
+          posts_per_page: parseInt(postsPerPage),
+          include_pagination: true
+        }
+      })
       .then(res => {
-        dispatch({ type: actionTypes.STORE_POSTS, posts: res.data.content });
+        dispatch({
+          type: actionTypes.STORE_POSTS,
+          posts: res.data.content.posts
+        });
+        if (res.data.content.pagination) {
+          dispatch({
+            type: actionTypes.SET_PAGINATION,
+            payload: res.data.content.pagination
+          });
+        }
         dispatch({ type: actionTypes.STOP_POST_LOADER });
       })
       .catch(err => {

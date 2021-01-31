@@ -10,7 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import './assets/css/index.css';
+import './assets/css/main.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import userReducer from './reduxStore/reducers/user';
